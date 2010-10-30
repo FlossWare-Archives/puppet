@@ -1,0 +1,28 @@
+options {
+	directory "/etc/named";
+	/*
+	 * If there is a firewall between you and nameservers you want
+	 * to talk to, you might need to uncomment the query-source
+	 * directive below.  Previous versions of BIND always asked
+	 * questions using port 53, but BIND 8.1 uses an unprivileged
+	 * port by default.
+	 */
+	listen-on { <%= dns::variables::dns_server_ip => };
+
+	forwarders { <%= dns::variables::dns_forwarders_ip => };
+};
+
+zone "flossware.com" IN {
+	type master;
+	file "db.flossware.com";
+    notify yes;
+    allow-update { <%= dns::variables::dns_server_ip =>; 127.0.0.1; };
+};
+
+zone "168.168.192.in-addr.arpa" IN {
+	type master;
+	file "db.192.168.168";
+    notify yes;
+    allow-update { <%= dns::variables::dns_server_ip =>; 127.0.0.1; };
+};
+

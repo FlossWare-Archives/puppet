@@ -1,0 +1,30 @@
+$ORIGIN .
+$TTL 86400      ; 1 day
+flossware.com		IN SOA	<%= variables::adminserver_host %>. root.<%= variables::flossware_domain %>. (
+				2000092153 ; serial
+				10800      ; refresh (3 hours)
+				900        ; retry (15 minutes)
+				604800     ; expire (1 week)
+				86400      ; minimum (1 day)
+				)
+			    NS	<%= variables::adminserver_host %>.
+			    A	192.168.168.1
+
+$ORIGIN <%= variables::flossware_domain %>.
+gateway			A	192.168.168.1
+amy     		A	192.168.168.2
+hale     		A	192.168.168.3
+playstation   	A	192.168.168.4
+itouch   		A	192.168.168.5
+psp   	 		A	192.168.168.6
+flossy 	 		A	192.168.168.7
+
+<%= variables::adminserver_host %>		A	<%= variables::adminserver_ip %>
+accesspoint		A	192.168.168.254
+
+fileserver		CNAME	<%= variables::adminserver_host %>
+fontserver		CNAME	<%= variables::adminserver_host %>
+mailserver		CNAME	<%= variables::adminserver_host %>
+puppet          CNAME   <%= variables::adminserver_host %>
+webserver		CNAME	<%= variables::adminserver_host %>
+www		    	CNAME	<%= variables::adminserver_host %>

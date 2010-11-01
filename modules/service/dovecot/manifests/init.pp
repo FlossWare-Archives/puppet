@@ -1,6 +1,6 @@
 class dovecot {
     $packages = [
-        "postfix",
+        "dovecot",
     ]
 
     package { $packages:

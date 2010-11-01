@@ -1,6 +1,6 @@
 class postfix inherits service {
-    $default_myhostname = ${variables::external_domain}
-    $default_myorigin   = ${variables::external_domain}
+    $postfix_defaultMyhostname = ${service_externalDomain}
+    $postfix_defaultMyorigin   = ${service_externalDomain}
 
     $packages = [
         "postfix",
@@ -17,24 +17,24 @@ class postfix inherits service {
 }
 
 class postfix::server inherits postfix {
-    $default_relay_server     = 'smtp-server.nc.rr.com'
-    $default_inet_interfaces  = '${variables::adminserver_host} , ${variables::adminserver_fqdn}, localhost, localhost.localdomain'
-    $default_proxy_interfaces = ${variables::default_gateway_ip}
-    $default_mydestination    = '\$myhostname, \$myhostname.$mydomain, localhost.\$mydomain, localhost, localhost.localdomain, ${variables::external_domain}'
+    $postfix_defaultRelayServer     = "smtp-server.nc.rr.com"
+    $postfix_defaultInetInterfaces  = "${service_adminHost}, ${service_adminFqdn}, localhost, localhost.localdomain"
+    $postfix_defaultProxyInterfaces = $service_gatewayIp
+    $postfix_defaultMydestination   = '\$myhostname, \$myhostname.$mydomain, localhost.\$mydomain, localhost, localhost.localdomain, ${variables::external_domain}'
 
-    $relay_sever = $relay_sever ? {
-        ''      => ${default_relay_server}
-        default => ${relay_server}
+    $postfix_relayServer = $postfix_relayServer ? {
+        ''      => $postfix_defaultRelayServer,
+        default => $postfix_relayServer,
     }
 
-    $inet_interfaces = $inet_interfaces ? {
-        ''      => ${default_inet_interfaces}
-        default => ${inet_interfaces}
+    $postfix_inetInterfaces = $postfix_inetInterfaces ? {
+        ''      => $postfix_defaultInetInterfaces,
+        default => $postfix_inetInterfaces,
     }
 
     $myhostname = $myhostname ? {
-        ''      => ${postfix::base::default_myhostname}
-        default => ${myhostname}
+        ''      => $postfix::base::default_myhostname
+        default => $myhostname
     }
 
     $myorigin = $myorigin ? {

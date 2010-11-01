@@ -2,7 +2,7 @@ class dns inherits service {
     $dns_defaultListenOn    = "${service_adminIp};"
     $dns_defaultForwarders  = "${service_gatewayIp};"
     $dns_defaultAllowUpdate = "${dns_defaultListenOn}; 127.0.0.1;"
-    $dns_defaultZones       = [ "$service_defaultInternalDomain", "${service_reversBaseIp}.in-addr.arpa", ]
+    $dns_defaultZones       = [ "$service_defaultInternalDomain", "${service_reverseBaseIp}.in-addr.arpa", ]
 
     $dns_defaultSearch      = "${service_internalDomain}"
     $dns_defaultNameServer  = "${service_adminIp}"

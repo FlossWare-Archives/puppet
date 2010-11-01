@@ -5,14 +5,7 @@ class portmap {
                 "portmap",
             ]
 
-            package { $packages:
-                ensure => installed,
-            }   
-
-            service { "portmap":
-                ensure  => running,
-                enable  => true,
-            }   
+            $service = "portmap"
         }   
 
         Fedora: {
@@ -20,14 +13,16 @@ class portmap {
                 "portreserve",
             ]
 
-            package { $packages:
-                ensure => installed,
-            }   
-
-            service { "portreserve":
-                ensure  => running,
-                enable  => true,
-            }   
+            $service = "portreserve"
         }   
+    }   
+
+    package { $packages:
+        ensure => installed,
+    }   
+
+    service { "$service":
+        ensure  => running,
+        enable  => true,
     }   
 }

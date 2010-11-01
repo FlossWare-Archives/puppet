@@ -1,6 +1,8 @@
 class kde {
+    include xwindows
+
     exec { "KDE Dependencies":
-        command    => "/usr/bin/yum groupinstall -y base-x kde-desktop ; /usr/bin/yum install -y xorg-x11-fonts*",
+        command    => "/usr/bin/yum groupinstall -y kde-desktop",
         cwd        => "/",
         timeout    => "1800",
         unless     => "which startkde",

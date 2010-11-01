@@ -1,6 +1,8 @@
 class gnome {
+    include xwindows
+
     exec { "Gnome Dependencies":
-        command    => "/usr/bin/yum groupinstall -y base-x gnome-desktop ; /usr/bin/yum install -y xorg-x11-fonts*",
+        command    => "/usr/bin/yum groupinstall -y gnome-desktop",
         cwd        => "/",
         timeout    => "1800",
         unless     => "which gnome-session",

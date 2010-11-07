@@ -32,60 +32,60 @@ class postfix::server inherits postfix {
         default => $postfix_inetInterfaces,
     }
 
-    $myhostname = $myhostname ? {
-        ''      => $postfix::base::default_myhostname
-        default => $myhostname
+    $postfix_myhostname = $postfix_myhostname ? {
+        ''      => $postfix_defaultMyhostname
+        default => $postfix_myhostname
     }
 
-    $myorigin = $myorigin ? {
-        ''      => ${postfix::base::default_myorigin}
-        default => ${myorigin}
+    $postfix_myorigin = $postfix_myorigin ? {
+        ''      => $postfix_defaultMyorigin}
+        default => $postfix_myorigin
     }
 
-    $proxy_interfaces = $proxy_interfaces ? {
-        ''      => ${postfix::base::default_proxy_interfaces}
-        default => ${proxy_interfaces}
+    $postfix_proxyInterfaces = $postfix_proxyInterfaces ? {
+        ''      => $postfix_defaultProxyInterfaces
+        default => $postfix_proxyInterfaces
     }
 
-    $mydestination = $mydestination ? {
-        ''      => ${default_mydestination}
-        default => ${mydestination}
+    $postfix_mydestination = $postfix_mydestination ? {
+        ''      => $postfix_defaultMydestination
+        default => $postfix_mydestination
     }
 
 
     file { "/etc/postfix/main.cf":
         content => template ( "postfix/main.cf.erb" ),
-        notify => Service [ "postfix" ],
+        notify  => Service [ "postfix" ],
     }
 }
 
 class postfix::client inherits postfix {
-    $default_relay_server    = 'mailserver.flossware.com'
-    $default_inet_interfaces = 'all'
+    $postfix_defaultRelayServer    = 'mailserver.flossware.com'
+    $postfix_defaultInetInterfaces = 'all'
 
-    $relay_sever = $relay_sever ? {
-        ''      => ${default_relay_server}
-        default => ${relay_server}
+    $postfix_relaySever = $postfix_relaySever ? {
+        ''      => $postfix_defaultRelayServer
+        default => $postfix_relayServer
     }
 
-    $inet_interfaces = $inet_interfaces ? {
-        ''      => ${defaultinet_interfaces}
-        default => ${inet_interfaces}
+    $postfix_inetInterfaces = $postfix_inetInterfaces ? {
+        ''      => $postfix_defaultinetInterfaces
+        default => $postfix_inetInterfaces
     }
 
-    $myhostname = $myhostname ? {
-        ''      => ${postfix::base::default_myhostname}
-        default => ${myhostname}
+    $postfix_myhostname = $postfix_myhostname ? {
+        ''      => $postfix_defaultMyhostname
+        default => $postfix_myhostname
     }
 
-    $myorigin = $myorigin ? {
-        ''      => ${postfix::base::default_myorigin}
-        default => ${myorigin}
+    $postfix_myorigin = $postfix_myorigin ? {
+        ''      => $postfix_defaultMyorigin
+        default => $postfix_myorigin
     }
 
 
     file { "/etc/postfix/main.cf":
         content => template ( "postfix/main.cf.erb" ),
-        notify => Service [ "postfix" ],
+        notify  => Service [ "postfix" ],
     }
 }

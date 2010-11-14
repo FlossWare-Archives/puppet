@@ -1,4 +1,4 @@
-class postgres {
+class postgres inherits service {
     package { "postgresql":
         ensure => installed,
     }

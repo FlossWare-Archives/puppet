@@ -70,7 +70,7 @@ mail_owner = postfix
 #myhostname = host.domain.tld
 #myhostname = virtual.domain.tld
 
-myhostname = <%= myhostname %>
+myhostname = <%= postfix_myhostname %>
 
 # The mydomain parameter specifies the local internet domain name.
 # The default is to use $myhostname minus the first component.
@@ -95,7 +95,7 @@ myhostname = <%= myhostname %>
 #myorigin = $myhostname
 #myorigin = $mydomain
 
-myorigin = <%= postfix::myorigin %>
+myorigin = <%= postfix_myorigin %>
 
 # RECEIVING MAIL
 
@@ -110,7 +110,7 @@ myorigin = <%= postfix::myorigin %>
 # Note: you need to stop/start Postfix when this parameter changes.
 #
 #inet_interfaces = adminserver, adminserver.flossware.com
-inet_interfaces = <%= inet_interfaces %>
+inet_interfaces = <%= postfix_inetInterfaces %>
 #inet_interfaces = $myhostname, localhost
 #inet_interfaces = localhost
 
@@ -126,7 +126,7 @@ inet_interfaces = <%= inet_interfaces %>
 #proxy_interfaces =
 #proxy_interfaces = 1.2.3.4
 <% if has_variable ? ( "proxy_interfaces" ) then %>
-proxy_interfaces = <%= proxy_interfaces %>
+proxy_interfaces = <%= postfix_proxyInterfaces %>
 <% end %>
 
 # The mydestination parameter specifies the list of domains that this
@@ -162,7 +162,7 @@ proxy_interfaces = <%= proxy_interfaces %>
 #
 #mydestination = $myhostname, $mydomain
 <% if has_variable ? ( "mydestination" ) then %>
-mydestination = <%= mydestination %>
+mydestination = <%= postfix_mydestination %>
 <% end %>
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
@@ -318,7 +318,7 @@ unknown_local_recipient_reject_code = 550
 #relayhost = uucphost
 #relayhost = [an.ip.add.ress]
 #relayhost = mail.mindspring.com
-relayhost = <%= relayhost %>
+relayhost = <%= postfix_relayHost %>
 
 # REJECTING UNKNOWN RELAY USERS
 #

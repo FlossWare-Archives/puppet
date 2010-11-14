@@ -1,16 +1,18 @@
 class service {
-    $service_defaultBaseNetmask      = '255.255.255'
-    $service_defaultNetmask          = "${service_defaultNetmask}.0"
-    $service_defaultBaseIp           = '192.168.168'
-    $service_defaultReverseBaseIp    = '168.168.192'
-    $service_defaultSubnet           = "${service_defaultBaseIp}.0"
-    $service_defaultBroadcastAddress = "${service_defaultBaseIp}.255"
-    $service_defaultInternalDomain   = 'flossware.com'
-    $service_defaultExternalDomain   = 'flossware.homelinux.org'
-    $service_defaultAdminHost        = 'adminserver'
-    $service_defaultAdminIp          = "${service_defaultBaseIp}.253"
-    $service_defaultAdminFqdn        = "${service_defaultAdminHost}.${service_defaultInternalDomain}"
-    $service_defaultGatewayIp        = "${service_defaultBaseIp}.1"
+    $service_defaultBaseNetmask       = '255.255.255'
+    $service_defaultNetmask           = "${service_defaultNetmask}.0"
+    $service_defaultBaseIp            = '192.168.168'
+    $service_defaultReverseBaseIp     = '168.168.192'
+    $service_defaultSubnet            = "${service_defaultBaseIp}.0"
+    $service_defaultBroadcastAddress  = "${service_defaultBaseIp}.255"
+    $service_defaultInternalDomain    = 'flossware.com'
+    $service_defaultExternalDomain    = 'flossware.homelinux.org'
+    $service_defaultAdminHost         = 'adminserver'
+    $service_defaultAdminIp           = "${service_defaultBaseIp}.253"
+    $service_defaultAdminFqdn         = "${service_defaultAdminHost}.${service_defaultInternalDomain}"
+    $service_defaultGatewayIp         = "${service_defaultBaseIp}.1"
+    $service_defaultExternalRelayHost = "smtp-server.nc.rr.com"
+    $service_defaultInternalRelayHost = "${service_defaultAdminHost}"
 
     $service_baseNetmask = $service_baseNetmask ? {
         ''      => $service_defaultBaseNetmask,
@@ -70,5 +72,15 @@ class service {
     $service_gatewayIp = $service_gatewayIp ? {
         ''      => $service_defaultGatewayIp,
         default => $service_gatewayIp, 
+    }
+
+    $service_externalRelayHost = $service_externalRelayHost ? {
+        ''      => $service_defaultExternalRelayHost,
+        default => $service_externalRelayHost, 
+    }
+
+    $service_internalRelayHost = $service_internalRelayHost ? {
+        ''      => $service_defaultInternalRelayHost,
+        default => $service_internalRelayHost, 
     }
 }

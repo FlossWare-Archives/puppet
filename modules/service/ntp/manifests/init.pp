@@ -29,39 +29,34 @@ class ntp inherits service {
         ensure  => running,
         enable  => true,
     }
+
+    class ntpService {
+        $ntp_server = $ntp_server ? {
+            ''      => $ntp_defaultServer,
+            default => $ntp_server,
+        }
+
+        $ntp_broadcast = $ntp_broadcast ? {
+            ''      => $ntp_defaultBroadcast,
+            default => $ntp_broadcast,
+        }
+
+        file { "/etc/ntp.conf":
+            content => template ( "ntp/client/ntp.conf" ),
+            notify  => Service [ "ntpd" ]
+        }
+    }
 }
 
 class ntp::client inherits ntp {
     $ntp_defaultServer = "${service_adminIp}"
 
-    $ntp_server = $ntp_server ? {
-        ''      => $ntp_defaultServer,
-        default => $ntp_server,
-    }
-
-    file { "/etc/ntp.conf":
-        content => template ( "ntp/client/ntp.conf" ),
-        notify  => Service [ "ntpd" ]
-    }
-
+    include ntpService
 }
 
 class ntp::server inherits ntp {
     $ntp_defaultBroadcast = "${service_defaultBroadcastAddress}"
     $ntp_defaultServer    = "0.north-america.pool.ntp.org"
 
-    $ntp_broadcast = $ntp_broadcast ? {
-        ''      => $ntp_defaultBroadcast,
-        default => $ntp_broadcast,
-    }
-
-    $ntp_server = $ntp_server ? {
-        ''      => $ntp_defaultServer,
-        default => $ntp_server,
-    }
-
-    file { "/etc/ntp.conf":
-        content => template ( "ntp/server/ntp.conf" ),
-        notify  => Service [ "ntpd" ]
-    }
+    include ntpService
 }

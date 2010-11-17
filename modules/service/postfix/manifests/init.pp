@@ -55,7 +55,7 @@ class postfix inherits service {
 }
 
 class postfix::server inherits postfix {
-    $postfix_defaultRelayHost       = "${service_externalRelayHost}"
+    $postfix_defaultRelayHost       = "${defaults::externalRelayHost}"
     $postfix_defaultInetInterfaces  = "${service_adminHost}, ${service_adminFqdn}, localhost, localhost.localdomain"
     $postfix_defaultProxyInterfaces = $service_gatewayIp
     $postfix_defaultMydestination   = '\$myhostname, \$myhostname.$mydomain, localhost.\$mydomain, localhost, localhost.localdomain, ${service_externalDomain}'
@@ -64,7 +64,7 @@ class postfix::server inherits postfix {
 }
 
 class postfix::client inherits postfix {
-    $postfix_defaultRelayHost      = "${service_internalRelayHost}"
+    $postfix_defaultRelayHost      = "${defaults::internalRelayHost}"
     $postfix_defaultInetInterfaces = 'all'
 
     include postfixService

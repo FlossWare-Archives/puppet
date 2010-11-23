@@ -1,13 +1,15 @@
 class service {
     include defaults
 
+    /*
     $service_baseNetmask = $service_baseNetmask ? {
         ''      => $defaults::baseNetmask,
         default => $service_baseNetmask,
     }
+    */
 
     $service_netmask = $service_netmask ? {
-        ''      => $defaults::netmask,
+        ''      => $netmask,
         default => $service_netmask,
     }
 
@@ -22,7 +24,7 @@ class service {
     }
 
     $service_subnet = $service_subnet ? {
-        ''      => $defaults::subnet,
+        ''      => $network_eth0,
         default => $service_subnet,
     }
 
@@ -32,7 +34,7 @@ class service {
     }
 
     $service_internalDomain = $service_internalDomain ? {
-        ''      => $defaults::internalDomain,
+        ''      => $domain,
         default => $service_internalDomain,
     }
 

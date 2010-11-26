@@ -15,7 +15,9 @@ $ORIGIN <%= variables::flossware_domain %>.
 <% dns_hosts.each |host| -%>
     <%= host [ "name" ] %> A <%= dns_baseIp %>.<%= host [ "subIp" ] %>
 
-    <% host [ "cname" ].each |cname| -%>
-        <%= cname %> CNAME <%= host [ "name" ] %>
-    <% end -%>
+    <% if host [ "cname" ] %>
+        <% host [ "cname" ].each |cname| -%>
+            <%= cname %> CNAME <%= host [ "name" ] %>
+        <% end -%>
+    <% end %>
 <% end -%>

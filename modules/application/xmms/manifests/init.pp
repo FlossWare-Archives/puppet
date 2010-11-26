@@ -12,3 +12,11 @@ class xmms {
     }   
 }
 
+class xmms::development {
+    include automake
+    include autoconf
+    include gcc
+    include glibc::develpment
+    include gtk::develpment
+}
+

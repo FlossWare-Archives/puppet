@@ -1,11 +1,44 @@
 class dns inherits service {
+    $dns_defaultSearch     = "${service_internalDomain}"
+    $dns_defaultNameServer = "${serice_adminHost}"
+
+    $dns_search = $dns_search ? {
+        ''      => $dns_defaultSearch,
+        default => $dns_search
+    }
+
+    $dns_nameServer = $dns_nameServer ? {
+        ''      => $dns_defaultNameServer,
+        default => $dns_nameServer
+    }
+}
+
+class dns::client inherits dns {
+    file { "/etc/resolv.conf":
+        content => template ( "dns/resolv.conf.erb" ),
+    }
+}
+
+class dns::server inherits dns {
+    $dns_defaultTTL         = "86400"
     $dns_defaultListenOn    = "${service_adminIp};"
     $dns_defaultForwarders  = "${service_gatewayIp};"
     $dns_defaultAllowUpdate = "${dns_defaultListenOn}; 127.0.0.1;"
-    $dns_defaultZones       = [ "$service_defaultInternalDomain", "${service_reverseBaseIp}.in-addr.arpa", ]
+    $dns_defaultZones       = [ "$service_defaultInternalDomain", "${dns_reverseBaseIp}.in-addr.arpa", ]
 
-    $dns_defaultSearch      = "${service_internalDomain}"
+    $dns_defaultDomain      = "${service_internalDomain}"
+    $dns_baseIp             = "${service_baseIp}"
     $dns_defaultNameServer  = "${service_adminIp}"
+
+    $dns_ttl = $dns_ttl ? {
+        ''      => $dns_defaultTTL,
+        default => $dns_ttl,
+        }
+
+    $dns_defaultReverseBaseIp = $dns_defaultReverseBaseIp ? { 
+        ''      => $defaults::reverseBaseIp,
+        default => $dns_defaultReverseBaseIp,
+    }   
 
     $dns_ListenOn = $dns_listenOn ? {
         ''      => $dns_defaultListenOn,
@@ -27,39 +60,33 @@ class dns inherits service {
         default => $dns_zones
     }
 
-    $dns_search = $dns_search ? {
-        ''      => $dns_defaultSearch,
-        default => $dns_search
+    $dns_domain = $dns_domain ? {
+        ''      => $dns_defaultDomain,
+        default => $dns_domain
     }
 
-    $dns_nameServer = $dns_nameServer ? {
-        ''      => $dns_defaultNameServer,
-        default => $dns_nameServer
+    $dns_baseIp = $dns_baseIp ? {
+        ''      => $dns_defaultBaseIp,
+        default => $dns_baseIp
     }
-}
 
-class dns::client inherits dns {
-    file { "/etc/resolv.conf":
-        content => template ( "dns/resolv.conf.erb" ),
+    $dns_hosts = $dns_hosts ? {
+        ''      => $dns_defaultHosts,
+        default => $dns_hosts
     }
-}
 
-class dns::server inherits dns {
+    // ------------------------------------------------------
+
     define zoneFile() {
-        file { "/etc/named":
-            ensure => directory,
-            owner  => "named",
-            group  => "named",
-        }
-
         file { "/etc/named/${name}":
             content => template ( "dns/named/${name}.erb" ),
             owner   => "named",
             group   => "named",
             notify  => service [ "named" ],
         }
-
     }
+
+    // ------------------------------------------------------
 
     $packages = [
         "bind",
@@ -72,6 +99,12 @@ class dns::server inherits dns {
     service { "named":
         ensure  => running,
         enable  => true,
+    }
+
+    file { "/etc/named":
+        ensure => directory,
+        owner  => "named",
+        group  => "named",
     }
 
     file { "/etc/named.conf":

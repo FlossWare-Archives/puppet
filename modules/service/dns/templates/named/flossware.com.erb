@@ -1,5 +1,5 @@
 $ORIGIN .
-$TTL 86400      ; 1 day
+$TTL <%= dns_ttl %>
 flossware.com		IN SOA	<%= variables::adminserver_host %>. root.<%= variables::flossware_domain %>. (
 				2000092153 ; serial
 				10800      ; refresh (3 hours)
@@ -11,20 +11,11 @@ flossware.com		IN SOA	<%= variables::adminserver_host %>. root.<%= variables::fl
 			    A	192.168.168.1
 
 $ORIGIN <%= variables::flossware_domain %>.
-gateway			A	192.168.168.1
-amy     		A	192.168.168.2
-hale     		A	192.168.168.3
-playstation   	A	192.168.168.4
-itouch   		A	192.168.168.5
-psp   	 		A	192.168.168.6
-flossy 	 		A	192.168.168.7
 
-<%= variables::adminserver_host %>		A	<%= variables::adminserver_ip %>
-accesspoint		A	192.168.168.254
+<% dns_hosts.each |host| -%>
+    <%= host [ "name" ] %> A <%= dns_baseIp %>.<%= host [ "subIp" ] %>
 
-fileserver		CNAME	<%= variables::adminserver_host %>
-fontserver		CNAME	<%= variables::adminserver_host %>
-mailserver		CNAME	<%= variables::adminserver_host %>
-puppet          CNAME   <%= variables::adminserver_host %>
-webserver		CNAME	<%= variables::adminserver_host %>
-www		    	CNAME	<%= variables::adminserver_host %>
+    <% host [ "cname" ].each |cname| -%>
+        <%= cname %> CNAME <%= host [ "name" ] %>
+    <% end -%>
+<% end -%>

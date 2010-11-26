@@ -1,13 +1,6 @@
 class service {
     include defaults
 
-    /*
-    $service_baseNetmask = $service_baseNetmask ? {
-        ''      => $defaults::baseNetmask,
-        default => $service_baseNetmask,
-    }
-    */
-
     $service_netmask = $service_netmask ? {
         ''      => $netmask,
         default => $service_netmask,

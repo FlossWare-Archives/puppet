@@ -6,6 +6,10 @@ class vi::enhanced {
     package { $packages:
         ensure => latest,
     }
+
+    file { "/etc/vimrc":
+        source => "puppet:///modules/vi/vim.conf"
+    }
 }
 
 class vi::X11 {
@@ -15,6 +19,10 @@ class vi::X11 {
 
     package { $packages:
         ensure => latest,
+    }
+
+    file { "/etc/gvimrc":
+        source => "puppet:///modules/vi/gvim.conf"
     }
 }
 

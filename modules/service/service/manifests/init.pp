@@ -1,19 +1,13 @@
 class service {
     include defaults
 
+    $service_defaultBaseIp           = template ( "service/BaseIp.erb" )
+    $service_defaultRevereseBaseIp   = template ( "service/ReverseBaseIp.erb" )
+    $service_defaultBroadcastAddress = "${service_defaultBaseIp}.255"
+    
     $service_netmask = $service_netmask ? {
-        ''      => $netmask,
+        ''      => $netmask_eth0,
         default => $service_netmask,
-    }
-
-    $service_baseIp = $service_baseIp ? {
-        ''      => $defaults::baseIp,
-        default => $service_baseIp,
-    }
-
-    $service_reverseBaseIp = $service_reverseBaseIp ? {
-        ''      => $defaults::reverseBaseIp,
-        default => $service_reverseBaseIp,
     }
 
     $service_subnet = $service_subnet ? {

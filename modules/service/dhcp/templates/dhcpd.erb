@@ -16,14 +16,16 @@ allow                   duplicates;
 authoritative;
 
 
-subnet <%= dhcp_subnet %> netmask <%= dhcp_netmask %> {
-    range <%= dhcp_minIp %> <%= dhcp_maxIp %>
-    option subnet-mask <%= dhcp_subnetMask %>;
-    option broadcast-address <%= dhcp_broadcastAddress %>;
-    option routers <%= dhcp_routers %>;
+<% dhcp_subnets.each do |subnet| -%?
+subnet <%= subnet [ "subnet" ] %> netmask <%= subnet [ "netmask" ] %> {
+    range <%= subnet [ "minIp" ] %> <%= subnet [ "maxIp" ] %>
+    option subnet-mask <%= subnet [ "subnetMask" ] %>;
+    option broadcast-address <%= subnet [ "broadcastAddress" ] %>;
+    option routers <%= subnet [ "routers" ] %>;
     option domain-name-servers <%= dhcp_dnsServers %>;
     option domain-name "<%= dns_domainName %>";
 }
+<% end -%>
 
 <% dhcp_zones.each |zone| -%>
 zone <%= zone %>. {

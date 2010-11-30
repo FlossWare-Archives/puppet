@@ -22,8 +22,8 @@ subnet <%= subnet [ "subnet" ] %> netmask <%= subnet [ "netmask" ] %> {
     option subnet-mask <%= subnet [ "subnetMask" ] %>;
     option broadcast-address <%= subnet [ "broadcastAddress" ] %>;
     option routers <%= subnet [ "routers" ] %>;
-    option domain-name-servers <%= dhcp_dnsServers %>;
-    option domain-name "<%= dns_domainName %>";
+    option domain-name-servers <%= subnet [ "dnsServers" ] %>;
+    option domain-name "<%= subnet [ "domainName" ] %>";
 }
 <% end -%>
 

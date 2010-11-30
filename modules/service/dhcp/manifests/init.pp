@@ -1,20 +1,34 @@
 class dhcp inherits service {
     include dns
 
-    $dhcp_defaultIdentifier       = ${service_adminHost}
+    # --------------------------------------------------------
+    # Define default values...
+    # --------------------------------------------------------
+
+    $dhcp_defaultIdentifier       = ${service_masterHost}
     $dhcp_defaultDomainName       = ${service_internalDomain}
     $dhcp_defaultMaxLeaseTime     = '21600'
     $dhcp_defaultDefaultLeaseTime = '21600'
-    $dhcp_defaultSubnet           = ${service_subnet}
-    $dhcp_defaultNetmask          = ${service_netmask}
-    $dhcp_defaultMinIp            = "${service_defaultBaseIp}.50"
-    $dhcp_defaultMaxIp            = "${service_defaultBaseIp}.250"
-    $dhcp_defaultSubnetMask       = ${service_netmask}
-    $dhcp_defaultBraodcastAddress = ${service_broadcastAddress}
-    $dhcp_defaultRouters          = ${service_gatewayIp}
-    $dhcp_defaultDnsServers       = ${dns::dns_serverIp}
-    $dhcp_zones                   = ${dns::zones}
 
+    $dhcp_defaultSubnets = [
+        {
+            subnet           => "${service_subnet}",
+            netmask          => "${service_netmask}",
+            minIp            => "${service_baseIp}.50",
+            maxIp            => "${service_baseIp}.250",
+            subnetMask       => "${service_netmask}",
+            broadcastAddress => "${service_broadcastAddress}",
+            routers          => "${service_gatewayIp}",
+            dnsServers       => "${dns::dns_serverIp}",
+            domainName       => "${service_internalDomain}",
+        }
+    ]
+
+    $dhcp_zones = ${dns::zones}
+
+    # --------------------------------------------------------
+    # Define default values...
+    # --------------------------------------------------------
 
     $dhcp_identifier = $dhcp_identifier ? { 
         ''      => $dhcp_defaultIdentifier,

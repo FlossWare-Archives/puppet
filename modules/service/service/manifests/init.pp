@@ -41,11 +41,11 @@
 
         service_externalDomain:
 
-        service_mainServerHost:
+        service_masterHost:
 
-        service_mainServerIp:
+        service_masterHostIp:
 
-        service_mainServerFqdn:
+        service_masterHostFqdn:
 
         service_gatewayIp:
 */
@@ -93,19 +93,19 @@ class service {
         default => $defaults::service_externalDomain,
     }
 
-    $service_defaultMainServerHost = $defaults::service_mainServerHost ? {
+    $service_defaultMasterHost = $defaults::service_masterHost ? {
         ''      => $hostname,
-        default => $defaults::service_mainServerHost,
+        default => $defaults::service_masterHost,
     }
 
-    $service_defaultMainServerIp = $defaults::service_mainServerIp ? {
+    $service_defaultMasterIp = $defaults::service_masterIp ? {
         ''      => $ipaddress,
-        default => $defaults::service_mainServerIp,
+        default => $defaults::service_masterIp,
     }
 
-    $service_defaultMainServerFqdn = $defaults::service_mainServerFqdn ? {
+    $service_defaultMasterFqdn = $defaults::service_masterFqdn ? {
         ''      => $fwdn,
-        default => $defaults::service_mainServerFqdn, 
+        default => $defaults::service_masterFqdn, 
     }
 
     $service_defaultGatewayIp = $defaults::service_gatewayIp ? {
@@ -154,19 +154,19 @@ class service {
         default => $service_externalDomain,
     }
 
-    $service_mainServerHost = $service_mainServerHost ? {
-        ''      => $service_defaultMainServerHost,
-        default => $service_mainServerHost,
+    $service_masterHost = $service_masterHost ? {
+        ''      => $service_defaultMasterHost,
+        default => $service_masterHost,
     }
 
-    $service_mainServerIp = $service_mainServerIp ? {
-        ''      => $service_defaultMainServerIp,
-        default => $service_mainServerIp,
+    $service_masterIp = $service_masterIp ? {
+        ''      => $service_defaultMasterIp,
+        default => $service_masterIp,
     }
 
-    $service_mainServerFqdn = $service_mainServerFqdn ? {
-        ''      => $service_defaultMainServerFqdn
-        default => $service_mainServerFqdn, 
+    $service_masterFqdn = $service_masterFqdn ? {
+        ''      => $service_defaultMasterFqdn
+        default => $service_masterFqdn, 
     }
 
     $service_gatewayIp = $service_gatewayIp ? {

@@ -5,26 +5,47 @@ class dhcp inherits service {
     # Define default values...
     # --------------------------------------------------------
 
-    $dhcp_defaultIdentifier       = ${service_masterHost}
-    $dhcp_defaultDomainName       = ${service_internalDomain}
-    $dhcp_defaultMaxLeaseTime     = '21600'
-    $dhcp_defaultDefaultLeaseTime = '21600'
+    $dhcp_defaultIdentifier = $defaults::dhcp_defaultIdentifier ? { 
+        ''      => ${service_masterHost},
+        default => $defaults::dhcp_defaultIdentifier,
+    }
 
-    $dhcp_defaultSubnets = [
-        {
-            subnet           => "${service_subnet}",
-            netmask          => "${service_netmask}",
-            minIp            => "${service_baseIp}.50",
-            maxIp            => "${service_baseIp}.250",
-            subnetMask       => "${service_netmask}",
-            broadcastAddress => "${service_broadcastAddress}",
-            routers          => "${service_gatewayIp}",
-            dnsServers       => "${dns::dns_serverIp}",
-            domainName       => "${service_internalDomain}",
-        }
-    ]
+    $dhcp_defaultDomainName = $defaults::dhcp_defaultDomainName ? {
+        ''      => ${service_internalDomain},
+        default => $defaults::dhcp_defaultDomainName,
+    }
 
-    $dhcp_zones = ${dns::zones}
+    $dhcp_defaultMaxLeaseTime = $defaults::dhcp_defaultMaxLeaseTime ? {
+        ''      => '21600',
+        default => $defaults::dhcp_defaultMaxLeaseTime,
+    }
+
+    $dhcp_defaultDefaultLeaseTime = $defaults::dhcp_defaultDefaultLeaseTime ? {
+        ''      => '21600',
+        default => $defaults::dhcp_defaultDefaultLeaseTime,
+    }
+
+    $dhcp_defaultSubnets = $defaults::dhcp_defaultSubnets ? {
+        '' => [
+            {
+                subnet           => "${service_subnet}",
+                netmask          => "${service_netmask}",
+                minIp            => "${service_baseIp}.50",
+                maxIp            => "${service_baseIp}.250",
+                subnetMask       => "${service_netmask}",
+                broadcastAddress => "${service_broadcastAddress}",
+                routers          => "${service_gatewayIp}",
+                dnsServers       => "${dns::dns_serverIp}",
+                domainName       => "${service_internalDomain}",
+            }
+        ],
+        default => $defaults::dhcp_defaultSubnets,
+    }
+
+    $dhcp_defaultZones = $defaults::dhcp_defaultZones ? {
+        ''      => ${dns::zones},
+        default => $defaults::dhcp_defaultZones,
+    }
 
     # --------------------------------------------------------
     # Define default values...

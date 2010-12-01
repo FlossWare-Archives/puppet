@@ -36,18 +36,25 @@
             The reverse base ip (octets in reverse order of service_baseIp) - for example 168.168.192
 
         service_broadcastAddress:
+            The broadcast address for things like DHCP and NTP - for example 192.168.168.0
 
         service_internalDomain:
+            The internal domain used - for example flossware.com
 
         service_externalDomain:
+            The external domain used outside of this network - for example flossware.homelinux.org
 
         service_masterHost:
+            The master server host name on this network.
 
         service_masterHostIp:
+            The IP address of the master server on this network.
 
         service_masterHostFqdn:
+            The fully qualified name of the master server on this network.
 
         service_gatewayIp:
+            The IP address of the gateway on this network.
 */
 class service {
     include defaults
@@ -58,59 +65,59 @@ class service {
     # value.
     # ------------------------------------------------------------
 
-    $service_defaultNetmask = $defaults::service_netmask ? {
+    $service_defaultNetmask = $defaults::service_defaultNetmask ? {
         ''      => $netmask_eth0,
-        default => $defaults::service_netmask,
+        default => $defaults::service_defaultNetmask,
     }
 
-    $service_defaultSubnet = $defaults::service_subnet ? {
+    $service_defaultSubnet = $defaults::service_defaultSubnet ? {
         ''      => $network_eth0,
         default => $defaults::service_subnet,
     }
 
-    $service_defaultBaseIp = $defaults::service_baseIp ? {
+    $service_defaultBaseIp = $defaults::service_defaultBaseIp ? {
         ''      => template ( "service/BaseIp.erb" ),
-        default => $defaults::service_baseIp,
+        default => $defaults::service_defaultBaseIp,
     }
 
-    $service_defaultReverseBaseIp = $defaults::service_reverseBaseIp ? {
+    $service_defaultReverseBaseIp = $defaults::service_defaultReverseBaseIp ? {
         ''      => template ( "service/ReverseBaseIp.erb" ),
-        default => $defaults::service_reverseBaseIp,
+        default => $defaults::service_defaultReverseBaseIp,
     }
 
-    $service_defaultsBroadcastAddress = $defaults::service_broadcastAddress ? {
+    $service_defaultsBroadcastAddress = $defaults::service_defaultBroadcastAddress ? {
         ''      => "{service_defaultBaseIp}.255",
-        default => $defaults::service_broadcastAddress,
+        default => $defaults::service_defaultBroadcastAddress,
     }
 
-    $service_defaultInternalDomain = $defaults::service_internalDomain ? {
+    $service_defaultInternalDomain = $defaults::service_defaultInternalDomain ? {
         ''      => $domain,
-        default => $defaults::service_internalDomain,
+        default => $defaults::service_defaultInternalDomain,
     }
 
-    $service_defaultExternalDomain = $defaults::service_externalDomain ? {
+    $service_defaultExternalDomain = $defaults::service_defaultExternalDomain ? {
         ''      => $domain,
-        default => $defaults::service_externalDomain,
+        default => $defaults::service_defaultExternalDomain,
     }
 
-    $service_defaultMasterHost = $defaults::service_masterHost ? {
+    $service_defaultMasterHost = $defaults::service_defaultMasterHost ? {
         ''      => $hostname,
-        default => $defaults::service_masterHost,
+        default => $defaults::service_defaultMasterHost,
     }
 
-    $service_defaultMasterIp = $defaults::service_masterIp ? {
+    $service_defaultMasterIp = $defaults::service_defaultMasterIp ? {
         ''      => $ipaddress,
-        default => $defaults::service_masterIp,
+        default => $defaults::service_defaultMasterIp,
     }
 
-    $service_defaultMasterFqdn = $defaults::service_masterFqdn ? {
+    $service_defaultMasterFqdn = $defaults::service_defaultMasterFqdn ? {
         ''      => $fwdn,
-        default => $defaults::service_masterFqdn, 
+        default => $defaults::service_defaultMasterFqdn, 
     }
 
-    $service_defaultGatewayIp = $defaults::service_gatewayIp ? {
+    $service_defaultGatewayIp = $defaults::service_defaultGatewayIp ? {
         ''      => $ipaddress,
-        default => $defaults::service_gatewayIp, 
+        default => $defaults::service_defaultGatewayIp, 
     }
 
 

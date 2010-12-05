@@ -1,4 +1,12 @@
 class pulse {
+    include defaults
+
+    # --------------------------------------------------------
+    # Define default values... 
+    # --------------------------------------------------------
+
+    $pulse_defaultSampleChannels = "2"
+
     $packages = [
         "pulseaudio",
     ]

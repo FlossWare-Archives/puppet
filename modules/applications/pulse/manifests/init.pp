@@ -1,16 +1,27 @@
 class pulse {
-    package { "dovecot":
+    $packages = [
+        "pulseaudio",
+    ]
+
+    package { $packages:
         ensure => installed,
     }
 
-    service { "dovecot":
-        ensure  => running,
-        enable  => true,
+    $files = [
+        "/etc/pulseaudio/daemon.conf",
+    ]
+
+    file { $files:
+        content => template ( "puleaudio/daemon.conf.erb" ),
     }
 
-    file { "/etc/dovecot.conf":
-        source => "puppet:///modules/dovecot/dovecot.conf",
-        notify => Service [ "dovecot" ],
+    $commands = [
+        "/usr/bin/killall pulseaudio; /usr/bin/pulseaudio -D --system"
+    ]
+
+    exec { $commands:
+        subscribe   => File [ $files ],
+        refreshonly => true,
     }
 }
 

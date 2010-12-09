@@ -57,6 +57,9 @@
             The IP address of the gateway on this network.
 */
 class service {
+    #
+    # Use defaults if defined...
+    #
     include defaults
 
     # ------------------------------------------------------------
@@ -75,13 +78,36 @@ class service {
         default => $defaults::service_subnet,
     }
 
+    #
+    # The template ComputeOctet.erb uses the variable service_ComputeOctet
+    # in computing the final octet...
+    #
+    $service_ComputeOctet = $service_defaultSubnet
+
+    $service_defaultOctet = $defaults::service_defaultOctet ? {
+        ''      => template ( "service/ComputeOctet.erb" ),
+        default => $defaults::service_defaultOctet,
+    }
+
+    #
+    # The template BaseIp.erb uses the variable service_ComputeBaseIp_subnet
+    # in computing the base IP. 
+    #
+    $service_ComputeBaseIp_subnet = $service_defaultSubnet
+
     $service_defaultBaseIp = $defaults::service_defaultBaseIp ? {
-        ''      => template ( "service/BaseIp.erb" ),
+        ''      => template ( "service/ComputeBaseIp.erb" ),
         default => $defaults::service_defaultBaseIp,
     }
 
+    #
+    # The template ReverseBaseIp.erb uses the variable service_ComputeReverseBaseIp_subnet
+    # in computing the reverse base IP.
+    #
+    $service_ComputeReverseBaseIp_subnet = $service_defaultSubnet
+
     $service_defaultReverseBaseIp = $defaults::service_defaultReverseBaseIp ? {
-        ''      => template ( "service/ReverseBaseIp.erb" ),
+        ''      => template ( "service/ComputeReverseBaseIp.erb" ),
         default => $defaults::service_defaultReverseBaseIp,
     }
 

@@ -25,6 +25,11 @@ class dhcp inherits service {
         default => $defaults::dhcp_defaultDefaultLeaseTime,
     }
 
+    $dhcp_defaultMinIp = $defaults::dhcp_defaultMinIp ? {
+        ''      => '50',
+        default => $defaults::dhcp_defaultDefaultLeaseTime,
+    }
+
     $dhcp_defaultSubnets = $defaults::dhcp_defaultSubnets ? {
         '' => [
             {

@@ -38,6 +38,9 @@
         service_broadcastAddress:
             The broadcast address for things like DHCP and NTP - for example 192.168.168.0
 
+        service_hostNumber:
+            The host number (last octet in IP/Address) - for example in 192.168.168.253, the service_hostNumber is 253.
+
         service_internalDomain:
             The internal domain used - for example flossware.com
 
@@ -79,21 +82,10 @@ class service {
     }
 
     #
-    # The template ComputeOctet.erb uses the variable service_ComputeOctet
-    # in computing the final octet...
-    #
-    $service_ComputeOctet = $service_defaultSubnet
-
-    $service_defaultOctet = $defaults::service_defaultOctet ? {
-        ''      => template ( "service/ComputeOctet.erb" ),
-        default => $defaults::service_defaultOctet,
-    }
-
-    #
-    # The template BaseIp.erb uses the variable service_ComputeBaseIp_subnet
+    # The template BaseIp.erb uses the variable service_ComputeBaseIp
     # in computing the base IP. 
     #
-    $service_ComputeBaseIp_subnet = $service_defaultSubnet
+    $service_computeBaseIp = $service_defaultSubnet
 
     $service_defaultBaseIp = $defaults::service_defaultBaseIp ? {
         ''      => template ( "service/ComputeBaseIp.erb" ),
@@ -101,10 +93,10 @@ class service {
     }
 
     #
-    # The template ReverseBaseIp.erb uses the variable service_ComputeReverseBaseIp_subnet
+    # The template ReverseBaseIp.erb uses the variable service_ComputeReverseBaseIp
     # in computing the reverse base IP.
     #
-    $service_ComputeReverseBaseIp_subnet = $service_defaultSubnet
+    $service_computeReverseBaseIp = $service_defaultSubnet
 
     $service_defaultReverseBaseIp = $defaults::service_defaultReverseBaseIp ? {
         ''      => template ( "service/ComputeReverseBaseIp.erb" ),
@@ -114,6 +106,17 @@ class service {
     $service_defaultsBroadcastAddress = $defaults::service_defaultBroadcastAddress ? {
         ''      => "{service_defaultBaseIp}.255",
         default => $defaults::service_defaultBroadcastAddress,
+    }
+
+    #
+    # The template C.erb uses the variable service_ComputeHostNumber
+    # in computing the host number...
+    #
+    $service_computeHostNumber = $ipaddress
+
+    $service_defaultHostNumber = $defaults::service_defaultHostNumber ? {
+        ''      => template ( "service/ComputeHostNumber.erb" ),
+        default => $defaults::service_defaultHostNumber,
     }
 
     $service_defaultInternalDomain = $defaults::service_defaultInternalDomain ? {
@@ -175,6 +178,11 @@ class service {
     $service_broadcastAddress = $service_broadcastAddress ? {
         ''      => $service_defaultBroadcastAddress,
         default => $service_broadcastAddress,
+    }
+
+    $service_hostNumber = $service_hostNumber ? {
+        ''      => $service_defaultHostNumber,
+        default => $service_hostNumber,
     }
 
     $service_internalDomain = $service_internalDomain ? {

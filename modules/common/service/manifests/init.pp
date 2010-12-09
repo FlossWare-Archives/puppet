@@ -29,11 +29,11 @@
         service_subnet:
             The subnet address for the network - for example 192.168.168.0
 
-        service_baseIp:
-            The base ip for the network - for example 192.168.168
+        service_networkNumber:
+            The network number for the network - for example in 192.168.168.253, the service_networkNumber is 192.168.168
 
-        service_reverseBaseIp:
-            The reverse base ip (octets in reverse order of service_baseIp) - for example 168.168.192
+        service_reverseNetworkNumber:
+            The reverse network number (values in reverse order of service_networkNumber) - for example in 102.168.168.252, the service_reverseNetworkNumber is 168.168.192
 
         service_broadcastAddress:
             The broadcast address for things like DHCP and NTP - for example 192.168.168.0
@@ -82,25 +82,25 @@ class service {
     }
 
     #
-    # The template BaseIp.erb uses the variable service_ComputeBaseIp
-    # in computing the base IP. 
+    # The template ComputeNetworkNumber.erb uses the variable service_computeNetworkNumber
+    # in computing the network number.
     #
-    $service_computeBaseIp = $service_defaultSubnet
+    $service_computeNetworkNumber = $service_defaultSubnet
 
-    $service_defaultBaseIp = $defaults::service_defaultBaseIp ? {
-        ''      => template ( "service/ComputeBaseIp.erb" ),
-        default => $defaults::service_defaultBaseIp,
+    $service_defaultNetworkNumber = $defaults::service_defaultNetworkNumber ? {
+        ''      => template ( "service/ComputeNetworkNumber.erb" ),
+        default => $defaults::service_defaultNetworkNumber,
     }
 
     #
-    # The template ReverseBaseIp.erb uses the variable service_ComputeReverseBaseIp
-    # in computing the reverse base IP.
+    # The template ComputeReverseNetworkNumber.erb uses the variable service_computeReverseNetworkNumber
+    # in computing the reverse network number.
     #
-    $service_computeReverseBaseIp = $service_defaultSubnet
+    $service_computeReverseNetworkNumber = $service_defaultSubnet
 
-    $service_defaultReverseBaseIp = $defaults::service_defaultReverseBaseIp ? {
-        ''      => template ( "service/ComputeReverseBaseIp.erb" ),
-        default => $defaults::service_defaultReverseBaseIp,
+    $service_defaultReverseNetworkNumber = $defaults::service_defaultReverseNetworkNumber ? {
+        ''      => template ( "service/ComputeReverseNetworkNumber.erb" ),
+        default => $defaults::service_defaultReverseNetworkNumber,
     }
 
     $service_defaultsBroadcastAddress = $defaults::service_defaultBroadcastAddress ? {
@@ -165,14 +165,14 @@ class service {
         default => $service_subnet,
     }
 
-    $service_baseIp = $service_baseIp ? {
-        ''      => $service_defaultBaseIp,
-        default => $service_baseIp,
+    $service_networkNumber = $service_networkNumber ? {
+        ''      => $service_defaultNetworkNumber,
+        default => $service_networkNumber,
     }
 
-    $service_reverseBaseIp = $service_reverseBaseIp ? {
-        ''      => $service_defaultReverseBaseIp,
-        default => $service_reverseBaseIp,
+    $service_reverseNetworkNumber = $service_reverseNetworkNumber ? {
+        ''      => $service_defaultReverseNetworkNumber,
+        default => $service_reverseNetworkNumber,
     }
 
     $service_broadcastAddress = $service_broadcastAddress ? {

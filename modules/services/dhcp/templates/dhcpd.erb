@@ -16,7 +16,7 @@ allow                   duplicates;
 authoritative;
 
 
-<% dhcp_subnets.each do |subnet| -%?
+<% dhcp_subnets.each do |subnet| -%>
 subnet <%= subnet [ "subnet" ] %> netmask <%= subnet [ "netmask" ] %> {
     range <%= subnet [ "minIp" ] %> <%= subnet [ "maxIp" ] %>
     option subnet-mask <%= subnet [ "subnetMask" ] %>;

@@ -6,12 +6,12 @@ class dhcp inherits service {
     # --------------------------------------------------------
 
     $dhcp_defaultIdentifier = $defaults::dhcp_defaultIdentifier ? { 
-        ''      => ${service_masterHost},
+        ''      => $service_masterHost,
         default => $defaults::dhcp_defaultIdentifier,
     }
 
     $dhcp_defaultDomainName = $defaults::dhcp_defaultDomainName ? {
-        ''      => ${service_internalDomain},
+        ''      => $service_internalDomain,
         default => $defaults::dhcp_defaultDomainName,
     }
 
@@ -25,9 +25,14 @@ class dhcp inherits service {
         default => $defaults::dhcp_defaultDefaultLeaseTime,
     }
 
-    $dhcp_defaultMinIp = $defaults::dhcp_defaultMinIp ? {
-        ''      => '50',
-        default => $defaults::dhcp_defaultDefaultLeaseTime,
+    $dhcp_defaultMinHostNumber = $defaults::dhcp_defaultMinHostNumber ? {
+        ''      => $service_defaultHostNumber + 1,
+        default => $defaults::dhcp_defaultMinHostNumber,
+    }
+
+    $dhcp_defaultMaxHostNumber = $defaults::dhcp_defaultMaxHostNumber ? {
+        ''      => $dhcp_defaultMinHostNumber + 1,
+        default => $defaults::dhcp_defaultMaxHostNumber,
     }
 
     $dhcp_defaultSubnets = $defaults::dhcp_defaultSubnets ? {
@@ -35,8 +40,8 @@ class dhcp inherits service {
             {
                 subnet           => "${service_subnet}",
                 netmask          => "${service_netmask}",
-                minIp            => "${service_baseIp}.50",
-                maxIp            => "${service_baseIp}.250",
+                minIp            => "${service_defaultNetworkNumber}.${dhcp_defaultMinHostNumber}",
+                maxIp            => "${service_defaultNetworkNumber}.${dhcp_defaultMaxHostNumber}",
                 subnetMask       => "${service_netmask}",
                 broadcastAddress => "${service_broadcastAddress}",
                 routers          => "${service_gatewayIp}",
@@ -53,7 +58,7 @@ class dhcp inherits service {
     }
 
     # --------------------------------------------------------
-    # Define default values...
+    # Define values...
     # --------------------------------------------------------
 
     $dhcp_identifier = $dhcp_identifier ? { 
@@ -71,49 +76,24 @@ class dhcp inherits service {
         default => $dhcp_maxLeaseTime,
 	}   
 
-    $dhcp_defaultLeaseTime = $dhcp_defaultLeaseTime ? { 
+    $dhcp_leaseTime = $dhcp_leaseTime ? { 
         ''      => $dhcp_defaultDefaultLeaseTime,
-        default => $dhcp_defaultLeaseTime,
+        default => $dhcp_leaseTime,
 	}   
 
-    $dhcp_subnet = $dhcp_subnet ? { 
-        ''      => $dhcp_defaultSubnet,
-        default => $dhcp_subnet,
+    $dhcp_minHostNumber = $dhcp_minHostNumber ? { 
+        ''      => $dhcp_defaultMinHostNumber,
+        default => $dhcp_minHostNumber,
 	}   
 
-    $dhcp_netmask = $dhcp_netmask ? { 
-        ''      => $dhcp_defaultNetmask,
-        default => $dhcp_netmask,
+    $dhcp_maxHostNumber = $dhcp_maxHostNumber ? { 
+        ''      => $dhcp_defaultMaxHostNumber,
+        default => $dhcp_maxHostNumber,
 	}   
 
-    $dhcp_minIp = $dhcp_minIp ? { 
-        ''      => $dhcp_defaultMinIp,
-        default => $dhcp_minIp,
-	}   
-
-    $dhcp_maxIp = $dhcp_maxIp ? { 
-        ''      => $dhcp_defaultMaxIp,
-        default => $dhcp_maxIp,
-	}   
-
-    $dhcp_subnetMask = $dhcp_subnetMask ? { 
-        ''      => $dhcp_defaultSubnetMask,
-        default => $dhcp_subnetMask,
-	}   
-
-    $dhcp_broadcastAddress = $dhcp_broadcastAddress ? { 
-        ''      => $dhcp_defaultBroadcastAddress,
-        default => $dhcp_broadcastAddress,
-	}   
-
-    $dhcp_routers = $dhcp_routers ? { 
-        ''      => $dhcp_defaultRouters,
-        default => $dhcp_routers,
-	}   
-
-    $dhcp_dnsServers = $dhcp_dnsServers ? { 
-        ''      => $dhcp_defaultDnsServers,
-        default => $dhcp_dnsServers,
+    $dhcp_subnets = $dhcp_subnets ? { 
+        ''      => $dhcp_defaultSubnets,
+        default => $dhcp_subnets,
 	}   
 
     $dhcp_zones = $dhcp_zones ? { 

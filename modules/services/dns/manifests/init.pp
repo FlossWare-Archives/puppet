@@ -1,6 +1,13 @@
 class dns inherits service {
-    $dns_defaultSearch     = "${service_internalDomain}"
-    $dns_defaultNameServer = "${serice_adminHost}"
+    $dns_defaultSearch = $defaults::dns_defaultSearch ? {
+        ''      => $service_internalDomain,
+        default => $defaults::dns_defaultSearch,
+    }
+
+    $dns_defaultNameServer = $defaults::dns_defaultNameServer ? {
+        ''      => $service_masterHost,
+        default => $defaults::dns_defaultNameServer,
+    }
 
     $dns_search = $dns_search ? {
         ''      => $dns_defaultSearch,
@@ -20,15 +27,46 @@ class dns::client inherits dns {
 }
 
 class dns::server inherits dns {
-    $dns_defaultTTL         = "86400"
-    $dns_defaultListenOn    = "${service_adminIp};"
-    $dns_defaultForwarders  = "${service_gatewayIp};"
-    $dns_defaultAllowUpdate = "${dns_defaultListenOn}; 127.0.0.1;"
-    $dns_defaultZones       = [ "$service_defaultInternalDomain", "${dns_reverseBaseIp}.in-addr.arpa", ]
+    $dns_defaultTTL = $defaults::dns_defaultTTL ? {
+        ''      => "86400",
+        default => $defaults::dns_defaultTTL,
+    }
 
-    $dns_defaultDomain      = "${service_internalDomain}"
-    $dns_baseIp             = "${service_baseIp}"
-    $dns_defaultNameServer  = "${service_adminIp}"
+    $dns_defaultListenOn = $defaults::dns_defaultListenOn ? {
+        ''      => "${service_adminIp};",
+        default => $defaults::dns_defaultListenOn,
+    }
+
+    $dns_defaultForwarders = $defaults::dns_defaultForwarders ? {
+        ''      => "${service_gatewayIp};",
+        default => $defaults::dns_defaultForwarders,
+    }
+
+    $dns_defaultAllowUpdate = $defaults::dns_defaultAllowUpdate ? {
+        ''      => "${dns_defaultListenOn}; 127.0.0.1;",
+        default => $defaults::dns_defaultAllowUpdate,
+    }
+
+    $dns_defaultZones = $defaults::dns_defaultZones ? {
+        ''      => [ "$service_defaultInternalDomain", "${dns_reverseBaseIp}.in-addr.arpa", ],
+        default => $defaults::dns_defaultZones,
+    }
+
+    $dns_defaultDomain = $defaults::dns_defaultDomain ? {
+        ''      => "${service_internalDomain}",
+        default => $defaults::dns_defaultDomain,
+    }
+
+
+    $dns_defaultNetworkNumber = $defaults::dns_defaultNetworkNumber ? {
+        ''      => "${service_networkNumber}",
+        default => $defaults::dns_defaultNetworkNumber,
+    }
+
+    $dns_defaultNameServer = $defaults::dns_defaultNameServer ? {
+        ''      => "${service_masterIp}",
+        default => $defaults::dns_defaultNameServer,
+    }
 
     $dns_ttl = $dns_ttl ? {
         ''      => $dns_defaultTTL,
@@ -75,7 +113,7 @@ class dns::server inherits dns {
         default => $dns_hosts
     }
 
-    // ------------------------------------------------------
+    # ------------------------------------------------------
 
     define zoneFile() {
         file { "/etc/named/${name}":
@@ -86,7 +124,7 @@ class dns::server inherits dns {
         }
     }
 
-    // ------------------------------------------------------
+    # ------------------------------------------------------
 
     $packages = [
         "bind",

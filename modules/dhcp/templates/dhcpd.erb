@@ -1,13 +1,13 @@
-server-identifier       <%= dhcp_identifier %>;
-ddns-domainname         "<%= dhcp_domainName %>.";
+server-identifier       <%= scope.lookupvar ( 'dhcp::server::variables::dhcp_identifier' ) %>;
+ddns-domainname         "<%= scope.lookupvar ( 'dhcp::server::variables::dhcp_domainName' ) %>.";
 ddns-rev-domainname     "in-addr.arpa.";
 ddns-update-style       interim;
 ddns-updates            on;
 update-static-leases    on;
 do-forward-updates      on;
 one-lease-per-client    on;
-max-lease-time          <%= dhcp_maxLeaseTime %>;
-default-lease-time      <%= dhcp_defaultLeaseTime %>;
+max-lease-time          <%= scope.lookupvar ( 'dhcp::server::variables::dhcp_maxLeaseTime' )  %>;
+default-lease-time      <%= scope.lookupvar ( 'dhcp::server::variables::dhcp_defaultLeaseTime' ) %>;
 
 allow                   client-updates;
 allow                   unknown-clients;
@@ -16,7 +16,7 @@ allow                   duplicates;
 authoritative;
 
 
-<% dhcp_subnets.each do |subnet| -%>
+<% scope.lookupvar ( 'dhcp::server::variables::dhcp_subnets' ).each do |subnet| -%>
 subnet <%= subnet [ "subnet" ] %> netmask <%= subnet [ "netmask" ] %> {
     range <%= subnet [ "minIp" ] %> <%= subnet [ "maxIp" ] %>
     option subnet-mask <%= subnet [ "subnetMask" ] %>;
@@ -27,9 +27,9 @@ subnet <%= subnet [ "subnet" ] %> netmask <%= subnet [ "netmask" ] %> {
 }
 <% end -%>
 
-<% dhcp_zones.each |zone| -%>
+<% scope.lookupvar ( 'dhcp_zones' ).each |zone| -%>
 zone <%= zone %>. {
-    primary <%= dhcp_dnsServers %>;
+    primary <%= scope.lookupvar ( 'dhcp_dnsServers' ) %>;
 }
 <% end -%>
 

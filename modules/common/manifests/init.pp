@@ -59,27 +59,10 @@
         common_gatewayIp:
             The IP address of the gateway on this network.
 */
-class common::variables {
-    #
-    # Use defaults if defined...
-    #
-    include defaults::variables
+class common::variables inherits overrides::variables {
+    $common_defaultNetmask = $netmask_eth0
 
-    # ------------------------------------------------------------
-    # Using the defaults class, attempt to use default values
-    # contained there.  If a default is not found, use a "good enough"
-    # value.
-    # ------------------------------------------------------------
-
-    $common_defaultNetmask = $defaults::common_defaultNetmask ? {
-        ''      => $netmask_eth0,
-        default => $defaults::common_defaultNetmask,
-    }
-
-    $common_defaultSubnet = $defaults::common_defaultSubnet ? {
-        ''      => $network_eth0,
-        default => $defaults::common_subnet,
-    }
+    $common_defaultSubnet = $network_eth0
 
     #
     # The template ComputeNetworkNumber.erb uses the variable common_computeNetworkNumber
@@ -87,10 +70,7 @@ class common::variables {
     #
     $common_computeNetworkNumber = $common_defaultSubnet
 
-    $common_defaultNetworkNumber = $defaults::common_defaultNetworkNumber ? {
-        ''      => template ( "common/ComputeNetworkNumber.erb" ),
-        default => $defaults::common_defaultNetworkNumber,
-    }
+    $common_defaultNetworkNumber = template ( "common/ComputeNetworkNumber.erb" )
 
     #
     # The template ComputeReverseNetworkNumber.erb uses the variable common_computeReverseNetworkNumber
@@ -98,15 +78,9 @@ class common::variables {
     #
     $common_computeReverseNetworkNumber = $common_defaultSubnet
 
-    $common_defaultReverseNetworkNumber = $defaults::common_defaultReverseNetworkNumber ? {
-        ''      => template ( "common/ComputeReverseNetworkNumber.erb" ),
-        default => $defaults::common_defaultReverseNetworkNumber,
-    }
+    $common_defaultReverseNetworkNumber =  template ( "common/ComputeReverseNetworkNumber.erb" )
 
-    $common_defaultsBroadcastAddress = $defaults::common_defaultBroadcastAddress ? {
-        ''      => "{common_defaultBaseIp}.255",
-        default => $defaults::common_defaultBroadcastAddress,
-    }
+    $common_defaultsBroadcastAddress = "${common_defaultNetworkNumber}.255"
 
     #
     # The template ComputeHostNumber.erb uses the variable common_computeHostNumber
@@ -114,40 +88,19 @@ class common::variables {
     #
     $common_computeHostNumber = $ipaddress
 
-    $common_defaultHostNumber = $defaults::common_defaultHostNumber ? {
-        ''      => template ( "common/ComputeHostNumber.erb" ),
-        default => $defaults::common_defaultHostNumber,
-    }
+    $common_defaultHostNumber = template ( "common/ComputeHostNumber.erb" )
 
-    $common_defaultInternalDomain = $defaults::common_defaultInternalDomain ? {
-        ''      => $domain,
-        default => $defaults::common_defaultInternalDomain,
-    }
+    $common_defaultInternalDomain = $domain
 
-    $common_defaultExternalDomain = $defaults::common_defaultExternalDomain ? {
-        ''      => $domain,
-        default => $defaults::common_defaultExternalDomain,
-    }
+    $common_defaultExternalDomain = $domain
 
-    $common_defaultMasterHost = $defaults::common_defaultMasterHost ? {
-        ''      => $hostname,
-        default => $defaults::common_defaultMasterHost,
-    }
+    $common_defaultMasterHost = $hostname
 
-    $common_defaultMasterIp = $defaults::common_defaultMasterIp ? {
-        ''      => $ipaddress,
-        default => $defaults::common_defaultMasterIp,
-    }
+    $common_defaultMasterIp = $ipaddress
 
-    $common_defaultMasterFqdn = $defaults::common_defaultMasterFqdn ? {
-        ''      => $fwdn,
-        default => $defaults::common_defaultMasterFqdn, 
-    }
+    $common_defaultMasterFqdn = $fwdn
 
-    $common_defaultGatewayIp = $defaults::common_defaultGatewayIp ? {
-        ''      => $ipaddress,
-        default => $defaults::common_defaultGatewayIp, 
-    }
+    $common_defaultGatewayIp = $ipaddress
 
 
     # ------------------------------------------------------------

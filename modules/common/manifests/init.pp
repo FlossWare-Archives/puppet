@@ -1,18 +1,14 @@
 /*
     Class: common::variables
 
-    This class contains common variables that can be used across modules.  It utilizes the
-    empty class +defaults+ for default values.  If a default value is not found, all attempts
-    are made to define a "good enough" default value.
+    This class contains common variables that can be used across modules.  Variables defined here
+    are either considered common and usable across modules, or defined when 2 or more modules
+    use said variable.
 
-    Variables contained here can be utilized either from a generic perspective or are defined
-    when 2 or more classes use said variable (thereby computing and storing the variable in one
-    class).  Overriding values for these variables can either be done in yaml or by defining a
-    default value for the variable.
-
-    Default values are searched in the +defaults+ class.  If not found, a "good enough" default
-    is defined.  Variables are then set, first examining if the variable is defined and if so
-    that value is used.  Otherwise, the default value is used.
+    Variables values can be defined in YAML or defined in the base class Variables.  For FlossWare,
+    the base class Variables contains no values.  However, for organizations utilizing the 
+    FlossWare puppet modules, defining the class Variables (and including that first in modulepath),
+    values can be set there.  If not values are set, "good enough" values are computed for defaults.
 
     Variables for this class, as well as all variables in all modules, should follow the following
     naming convention:
@@ -59,7 +55,7 @@
         common_gatewayIp:
             The IP address of the gateway on this network.
 */
-class common::variables inherits overrides::variables {
+class common::variables inherits variables {
     $common_defaultNetmask = $netmask_eth0
 
     $common_defaultSubnet = $network_eth0

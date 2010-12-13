@@ -1,6 +1,8 @@
-class postfix inherits service {
-    $postfix_defaultMyhostname = ${service_externalDomain}
-    $postfix_defaultMyorigin   = ${service_externalDomain}
+class postfix {
+    class variables inherits common::variables {
+        $postfix_defaultMyhostname = ${common_externalDomain}
+        $postfix_defaultMyorigin   = ${common_externalDomain}
+    }
 
     $packages = [
         "postfix",
@@ -14,8 +16,10 @@ class postfix inherits service {
         ensure  => running,
         enable  => true,
     }
+}
 
-    class postfixService {
+class postfix::service {
+    class variables inherits postfix::variables {
         $postfix_relayHost = $postfix_relayHost ? {
             ''      => $postfix_defaultRelayHost,
             default => $postfix_relayHost,
@@ -45,27 +49,26 @@ class postfix inherits service {
             ''      => $postfix_defaultMydestination
             default => $postfix_mydestination
         }
+    }
 
-
-        file { "/etc/postfix/main.cf":
-            content => template ( "postfix/main.cf.erb" ),
-            notify  => Service [ "postfix" ],
-        }
+    file { "/etc/postfix/main.cf":
+        content => template ( "postfix/main.cf.erb" ),
+        notify  => Service [ "postfix" ],
     }
 }
 
 class postfix::server inherits postfix {
     $postfix_defaultRelayHost       = "${defaults::externalRelayHost}"
-    $postfix_defaultInetInterfaces  = "${service_adminHost}, ${service_adminFqdn}, localhost, localhost.localdomain"
-    $postfix_defaultProxyInterfaces = $service_gatewayIp
-    $postfix_defaultMydestination   = '\$myhostname, \$myhostname.$mydomain, localhost.\$mydomain, localhost, localhost.localdomain, ${service_externalDomain}'
+    $postfix_defaultInetInterfaces  = "${common_masterHost}, ${common_masterFqdn}, localhost, localhost.localdomain"
+    $postfix_defaultProxyInterfaces = $common_masterGatewayIp
+    $postfix_defaultMydestination   = '\$myhostname, \$myhostname.$mydomain, localhost.\$mydomain, localhost, localhost.localdomain, ${common_externalDomain}'
 
-    include postfixService
+    include postfix::service
 }
 
 class postfix::client inherits postfix {
     $postfix_defaultRelayHost      = "${defaults::internalRelayHost}"
     $postfix_defaultInetInterfaces = 'all'
 
-    include postfixService
+    include postfix::service
 }

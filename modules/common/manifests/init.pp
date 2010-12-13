@@ -76,7 +76,7 @@ class common::variables inherits variables {
 
     $common_defaultReverseNetworkNumber =  template ( "common/ComputeReverseNetworkNumber.erb" )
 
-    $common_defaultsBroadcastAddress = "${common_defaultNetworkNumber}.255"
+    $common_defaultBroadcastAddress = "${common_defaultNetworkNumber}.255"
 
     #
     # The template ComputeHostNumber.erb uses the variable common_computeHostNumber

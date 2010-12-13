@@ -6,57 +6,27 @@ class dhcp::server {
         # Define default values...
         # --------------------------------------------------------
 
-        $dhcp_defaultIdentifier = $defaults::dhcp_defaultIdentifier ? { 
-            ''      => $service_masterHost,
-            default => $defaults::dhcp_defaultIdentifier,
-        }
+        $dhcp_defaultIdentifier       = $common_masterHost
+        $dhcp_defaultDomainName       = $common_internalDomain
+        $dhcp_defaultMaxLeaseTime     = '21600'
+        $dhcp_defaultDefaultLeaseTime = '21600'
+        $dhcp_defaultMinHostNumber    = $common_defaultHostNumber  + 1
+        $dhcp_defaultMaxHostNumber    = $dhcp_defaultMinHostNumber + 1
+        $dhcp_defaultZones            = ${dns::variables::zones}
 
-        $dhcp_defaultDomainName = $defaults::dhcp_defaultDomainName ? {
-            ''      => $service_internalDomain,
-            default => $defaults::dhcp_defaultDomainName,
-        }
-
-        $dhcp_defaultMaxLeaseTime = $defaults::dhcp_defaultMaxLeaseTime ? {
-            ''      => '21600',
-            default => $defaults::dhcp_defaultMaxLeaseTime,
-        }
-
-        $dhcp_defaultDefaultLeaseTime = $defaults::dhcp_defaultDefaultLeaseTime ? {
-            ''      => '21600',
-            default => $defaults::dhcp_defaultDefaultLeaseTime,
-        }
-
-        $dhcp_defaultMinHostNumber = $defaults::dhcp_defaultMinHostNumber ? {
-            ''      => $service_defaultHostNumber + 1,
-            default => $defaults::dhcp_defaultMinHostNumber,
-        }
-
-        $dhcp_defaultMaxHostNumber = $defaults::dhcp_defaultMaxHostNumber ? {
-            ''      => $dhcp_defaultMinHostNumber + 1,
-            default => $defaults::dhcp_defaultMaxHostNumber,
-        }
-
-        $dhcp_defaultSubnets = $defaults::dhcp_defaultSubnets ? {
-            '' => [
-                {
-                    subnet           => "${service_subnet}",
-                    netmask          => "${service_netmask}",
-                    minIp            => "${service_defaultNetworkNumber}.${dhcp_defaultMinHostNumber}",
-                    maxIp            => "${service_defaultNetworkNumber}.${dhcp_defaultMaxHostNumber}",
-                    subnetMask       => "${service_netmask}",
-                    broadcastAddress => "${service_broadcastAddress}",
-                    routers          => "${service_gatewayIp}",
-                    dnsServers       => "${dns::dns_serverIp}",
-                    domainName       => "${service_internalDomain}",
-                }
-            ],
-            default => $defaults::dhcp_defaultSubnets,
-        }
-
-        $dhcp_defaultZones = $defaults::dhcp_defaultZones ? {
-            ''      => ${dns::zones},
-            default => $defaults::dhcp_defaultZones,
-        }
+        $dhcp_defaultSubnets = [
+            {
+                subnet           => "${common_subnet}",
+                netmask          => "${common_netmask}",
+                minIp            => "${common_defaultNetworkNumber}.${dhcp_defaultMinHostNumber}",
+                maxIp            => "${common_defaultNetworkNumber}.${dhcp_defaultMaxHostNumber}",
+                subnetMask       => "${common_netmask}",
+                broadcastAddress => "${common_broadcastAddress}",
+                routers          => "${common_gatewayIp}",
+                dnsServers       => "${dns::dns_serverIp}",
+                domainName       => "${common_internalDomain}",
+            }
+        ]
 
         # --------------------------------------------------------
         # Define values...

@@ -1,4 +1,4 @@
-class nfs inherits service {
+class nfs {
     $packages = [
         "nfs-utils",
     ]
@@ -14,17 +14,19 @@ class nfs inherits service {
 }
 
 class nfs::client inherits nfs {
-    $nfs_defaultServer     = "$service_adminHost"
-    $nfs_defaultServerDirs = [ "/home", ]
+    class variables inherits common::variables {
+        $nfs_defaultServer     = "${common_masterHost}"
+        $nfs_defaultServerDirs = [ "/home", ]
 
-    $nfs_server = $nfs_server ? {
-        ''      => $nfs_defaultServer,
-        default => $nfs_server,
-    }
+        $nfs_server = $nfs_server ? {
+            ''      => $nfs_defaultServer,
+            default => $nfs_server,
+        }
 
-    $nfs_serverDirs = $nfs_serverDirs ? {
-        ''      => $nfs_defaultServerDirs,
-        default => $nfs_serverDirs,
+        $nfs_serverDirs = $nfs_serverDirs ? {
+            ''      => $nfs_defaultServerDirs,
+            default => $nfs_serverDirs,
+        }
     }
 
     define mountDirs() {
@@ -34,7 +36,7 @@ class nfs::client inherits nfs {
 
         mount { "${name}":
             ensure   => mounted,
-            device   => "${nfs_server}:${name}",
+            device   => "${variables::nfs_server}:${name}",
             fstype   => "nfs",
             remounts => true,
             options  => "defaults",
@@ -48,21 +50,23 @@ class nfs::client inherits nfs {
         enable  => true,
     }
 
-    mountDirs { $nfs_serverDirs }
+    mountDirs { $variables::nfs_serverDirs }
 }
 
 class nfs::server inherits nfs {
-    $nfs_defaultExports     = [ "/home", ]
-    $nfs_defaultPermissions = "rw,no_root_squash" 
+    class variables inherits common::varialbles {
+        $nfs_defaultExports     = [ "/home", ]
+        $nfs_defaultPermissions = "rw,no_root_squash" 
 
-    $nfs_exports = $nfs_exports ? {
-        ''      => $nfs_defaultExports,
-        default => $nfs_exports,
-    }
+        $nfs_exports = $nfs_exports ? {
+            ''      => $nfs_defaultExports,
+            default => $nfs_exports,
+        }
 
-    $nfs_permissions = $nfs_permissions ? {
-        ''      => $nfs_defaultPermissions,
-        default => $nfs_permissions,
+        $nfs_permissions = $nfs_permissions ? {
+            ''      => $nfs_defaultPermissions,
+            default => $nfs_permissions,
+        }
     }
 
     service { "nfs":

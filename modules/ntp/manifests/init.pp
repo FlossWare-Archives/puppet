@@ -1,19 +1,28 @@
-class ntp {
-    class variables inherits common::variables {
-        $ntp_defaultMinPoll = "4"
-        $ntp_defaultMaxPoll = "8"
+include common::variables
 
-        $ntp_minPoll = $ntp_minPoll ? {
-            ''      => $ntp_defaultMinPoll,
-            default => $ntp_minPoll,
-        }
-
-        $ntp_maxPoll = $ntp_maxPoll ? {
-            ''      => $ntp_defaultMaxPoll,
-            default => $ntp_maxPoll,
-        }
+class variables ( $defaultMinPoll = "4", $defaultMaxPoll = "8", $defaultServer, $defaultBroadcast = "" ) inherits common::variables {
+    $ntp_minPoll = $ntp_minPoll ? {
+        ''      => $defaultMinPoll,
+        default => $ntp_minPoll,
     }
 
+    $ntp_maxPoll = $ntp_maxPoll ? {
+        ''      => $defaultMaxPoll,
+        default => $ntp_maxPoll,
+    }
+
+    $ntp_server = $ntp_server ? {
+        ''      => $defaultServer,
+        default => $ntp_server,
+    }
+
+    $ntp_broadcast = $ntp_broadcast ? {
+        ''      => $defaultBroadcast,
+        default => $ntp_broadcast,
+    }
+}
+
+class ntp {
     $packages = [
         "ntp",
         "ntpdate",
@@ -31,20 +40,6 @@ class ntp {
         ensure  => running,
         enable  => true,
     }
-}
-
-class ntp::service {
-    class variables inherits ntp::variables {
-        $ntp_server = $ntp_server ? {
-            ''      => $ntp_defaultServer,
-            default => $ntp_server,
-        }
-
-        $ntp_broadcast = $ntp_broadcast ? {
-            ''      => $ntp_defaultBroadcast,
-            default => $ntp_broadcast,
-        }
-    }
 
     file { "/etc/ntp.conf":
         content => template ( "ntp/client/ntp.conf" ),
@@ -52,15 +47,35 @@ class ntp::service {
     }
 }
 
-class ntp::client inherits ntp {
-    $ntp_defaultServer = "${service_adminIp}"
+class ntp::client::variables {
+    class {
+        variables:
+            defaultServer => "${common::common_masterIp}",
+    }
 
-    include ntp::service
+    $ntp_minPoll   = $variables::ntp_minPoll
+    $ntp_maxPoll   = $variables::ntp_maxPoll
+    $ntp_server    = $variables::ntp_server
+    $ntp_broadcast = $variables::ntp_broadcast
 }
 
-class ntp::server inherits ntp {
-    $ntp_defaultBroadcast = "${service_defaultBroadcastAddress}"
-    $ntp_defaultServer    = "0.north-america.pool.ntp.org"
+class ntp::client inherits ntp::client::variables {
+    include ntp
+}
 
-    include ntp::service
+class ntp::server::variables {
+    class {
+        variables:
+            defaultBroadcast = "${common::common_broadcastAddress}",
+            defaultServer    = "0.north-america.pool.ntp.org",
+    }
+
+    $ntp_minPoll   = $variables::ntp_minPoll
+    $ntp_maxPoll   = $variables::ntp_maxPoll
+    $ntp_server    = $variables::ntp_server
+    $ntp_broadcast = $variables::ntp_broadcast
+}
+
+class ntp::server inherits ntp::server::variables {
+    include ntp
 }

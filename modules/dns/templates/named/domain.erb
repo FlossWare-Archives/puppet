@@ -10,7 +10,7 @@ flossware.com		IN SOA	<%= variables::adminserver_host %>. root.<%= variables::fl
 			    NS	<%= variables::adminserver_host %>.
 			    A	192.168.168.1
 
-$ORIGIN <%= variables::flossware_domain %>.
+$ORIGIN <%= dns_domain %>.
 
 <% dns_hosts.each |host| -%>
     <%= host [ "name" ] %> A <%= dns_baseIp %>.<%= host [ "subIp" ] %>

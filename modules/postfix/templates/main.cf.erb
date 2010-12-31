@@ -125,7 +125,7 @@ inet_interfaces = <%= postfix_inetInterfaces %>
 #
 #proxy_interfaces =
 #proxy_interfaces = 1.2.3.4
-<% if has_variable ? ( "proxy_interfaces" ) then %>
+<% if has_variable?( "proxy_interfaces" and proxy_interfaces !="" ) then %>
 proxy_interfaces = <%= postfix_proxyInterfaces %>
 <% end %>
 
@@ -161,7 +161,7 @@ proxy_interfaces = <%= postfix_proxyInterfaces %>
 # See also below, section "REJECTING MAIL FOR UNKNOWN LOCAL USERS".
 #
 #mydestination = $myhostname, $mydomain
-<% if has_variable ? ( "mydestination" ) then %>
+<% if has_variable?( "postfix_mydestination" ) and postfix_mydestination != "" then %>
 mydestination = <%= postfix_mydestination %>
 <% end %>
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain

@@ -1,5 +1,5 @@
 server <%= ntp_server %> minpoll <%= ntp_minpoll %> maxpoll <%= maxpoll %> prefer
 
-<% has_variable?("ntp_broadcast") then %>
+<% has_variable?("ntp_broadcast") and ntp_broadcast != "" then %>
 broadcast <%= ntp_broadcast %>
 <% end %>

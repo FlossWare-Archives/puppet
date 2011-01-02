@@ -66,8 +66,8 @@ class ntp::client inherits ntp::client::variables {
 class ntp::server::variables {
     class {
         variables:
-            defaultBroadcast = "${common::common_broadcastAddress}",
-            defaultServer    = "0.north-america.pool.ntp.org",
+            defaultBroadcast => "${common::common_broadcastAddress}",
+            defaultServer    => "0.north-america.pool.ntp.org",
     }
 
     $ntp_minPoll   = $variables::ntp_minPoll

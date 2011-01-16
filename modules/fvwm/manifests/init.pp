@@ -3,6 +3,8 @@ class desktop::fvwm {
 
     $packages = [ 
         "fvwm",
+        "fvwm-themes",
+        "fvwm-themes-extra",
         "perl-Tk",
         "perl-X11-Protocol"
     ]   

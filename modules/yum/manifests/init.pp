@@ -1,36 +1,37 @@
-define enable_repo ($repoName = "$name") {
+define yum::enable_repo ($repoName = "$name") {
     exec { "$repoName-enable":
 	command => "yum --enablerepo=${repoName} repolist ${repoName}",
 	path    => ["/usr/bin", "/bin"],
     }
 }
 
-define install_repo ($repoName, $rpm) {
+define yum::install_repo ($repoName, $rpm) {
+notice ("INSTALLING => $rpm" )
     exec { "$repoName-install":
-	command => "rpm -Uvh --nogpgcheck install ${rpm}",
+	command => "rpm -Uvh ${rpm}",
 	unless  => "yum --enablerepo=${repoName} repolist ${repoName} | grep ^${repoName}",
 	path    => ["/usr/bin", "/bin"],
     }
 }
 
 class yum::centos::addons {
-    enable_repo { addons: repoName => "addons" }
+    yum::enable_repo { addons: repoName => "addons" }
 }
 
 class yum::centos::centosplus {
-    enable_repo { centosplus: repoName => "addons" }
+    yum::enable_repo { centosplus: repoName => "centosplus" }
 }
 
 class yum::centos::contrib {
-    enable_repo { contrib: repoName => "contrib" }
+    yum::enable_repo { contrib: repoName => "contrib" }
 }
 
 class yum::centos::extras {
-    enable_repo { extras: repoName => "extras" }
+    yum::enable_repo { extras: repoName => "extras" }
 }
 
 class yum::centos::updates {
-    enable_repo { updates: repoName => "updates" }
+    yum::enable_repo { updates: repoName => "updates" }
 }
 
 
@@ -58,7 +59,7 @@ class yum::centos::rpmforge {
 		}
 	    }
 
-	    install_repo {
+	    yum::install_repo {
 		centos-5-rpmforge:
 		    repoName => "rpmforge",
 		    rpm      => "${RPM}",
@@ -76,7 +77,7 @@ class yum::centos::rpmforge {
 		}
 	    }
 
-	    install_repo {
+	    yum::install_repo {
 		centos6-rpmforge:
 		    repoName => "rpmforge",
 		    rpm      => "${RPM}",
@@ -88,13 +89,13 @@ class yum::centos::rpmforge {
 class yum::centos::rpmfusion {
     case $lsbmajdistrelease {
 	5: {
-	    install_repo {
+	    yum::install_repo {
 		centos-5-rpmfusion-free:
 		    repoName => "rpmfusion-free",
 		    rpm      => "http://download1.rpmfusion.org/free/el/updates/testing/${lsbmajdistrelease}/${architecture}/rpmfusion-free-release-5-0.1.noarch.rpm",
 	    }
 
-	    install_repo {
+	    yum::install_repo {
 		centos-5-rpmfusion-nonfree:
 		    repoName => "rpmfusion-nonfree",
 		    rpm      => "http://download1.rpmfusion.org/nonfree/el/updates/testing/${lsbmajdistrelease}/${architecture}/rpmfusion-nonfree-release-5-0.1.noarch.rpm",
@@ -107,7 +108,6 @@ class yum::centos::rpmfusion {
 class yum::fedora::everything {
     yumrepo {
 	fedora-everything:
-	    #baseurl      => "http://download.fedora.redhat.com/pub/fedora/linux/releases/$lsbdistrelease/Everything/$hardwaremodel/os",
             name         => "fedora-everything",
 	    mirrorlist   => "http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-${operatingsystemrelease}&arch=${architecture}",
 	    enabled      => "1",
@@ -131,13 +131,13 @@ class yum::fedora::updates {
 class yum::fedora::rpmfusion {
     case $lsbmajdistrelease {
 	15 : {
-	    install_repo {
+	    yum::install_repo {
 		fedora-15-rpmfusion-free:
 		    repoName => "rpmfusion-free",
 		    rpm      => "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-rawhide.noarch.rpm",
 		}
 
-	    install_repo {
+	    yum::install_repo {
 		fedora-15-rpmfusion-nonfree:
 		    repoName => "rpmfusion-free",
 		    rpm      => "http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-rawhide.noarch.rpm",
@@ -145,13 +145,13 @@ class yum::fedora::rpmfusion {
 	}
 
 	default: {
-	    install_repo {
+	    yum::install_repo {
 		fedora-rpmfusion-free:
 		    repoName => "rpmfusion-free",
 		    rpm      => "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm",
 	    }
 
-	    install_repo {
+	    yum::install_repo {
 		fedora-rpmfusion-nonfree:
 		    repoName => "rpmfusion-nonfree",
 		    rpm      => "http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm",
@@ -175,14 +175,10 @@ class yum::centos {
 class yum::fedora {
     include yum::fedora::everything
     include yum::fedora::updates
+    include yum::fedora::rpmfusion
 }
 
 class yum {
-    /*
-       lsbdistrelease => 5.6
-       lsbmajdistrelease => 5
-     */
-
     case $operatingsystem {
 	CentOS: {
 	    include yum::centos

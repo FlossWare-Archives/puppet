@@ -6,7 +6,6 @@ define yum::enable_repo ($repoName = "$name") {
 }
 
 define yum::install_repo ($repoName, $rpm) {
-notice ("INSTALLING => $rpm" )
     exec { "$repoName-install":
 	command => "rpm -Uvh ${rpm}",
 	unless  => "yum --enablerepo=${repoName} repolist ${repoName} | grep ^${repoName}",
@@ -36,13 +35,26 @@ class yum::centos::updates {
 
 
 class yum::centos::epel {
-    yumrepo {
-	epel:
-            name         => "epel",
-	    mirrorlist   => "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-${lsbmajdistrelease}&arch=${architecture}",
-	    enabled      => "1",
-	    enablegroups => "1",
-	    gpgcheck     => "0",
+    case $lsbmajdistrelease {
+	5: {
+	    $RPM = "http://download.fedora.redhat.com/pub/epel/${lsbmajdistrelease}/${architecture}/epel-release-5-4.noarch.rpm"
+
+	    yum::install_repo {
+		"epel-${lsbmajdistrelease}":
+		    repoName => "epel",
+		    rpm      => "${RPM}",
+	    }
+	}
+
+	6: {
+	    $RPM = "http://download.fedora.redhat.com/pub/epel/${lsbmajdistrelease}/${architecture}/epel-release-6-5.noarch.rpm"
+
+	    yum::install_repo {
+		"epel-${lsbmajdistrelease}":
+		    repoName => "epel",
+		    rpm      => "${RPM}",
+	    }
+	}
     }
 }
 
@@ -168,7 +180,7 @@ class yum::centos {
     include yum::centos::extras
     include yum::centos::updates
     include yum::centos::epel
-    include yum::centos::rpmforge
+    #include yum::centos::rpmforge
     include yum::centos::rpmfusion
 }
 

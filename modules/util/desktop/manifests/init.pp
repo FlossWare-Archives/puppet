@@ -1,4 +1,6 @@
-define desktop ($group, $unless, $timeout = $defaults::timeout, $path = $defaults::path) inherits defaults {
+include defaults
+
+define desktop ($group, $unless, $timeout = $defaults::timeout, $path = $defaults::path) {
     exec {
         command    => "/usr/bin/yum groupinstall -y ${group}",
         cwd        => "/",

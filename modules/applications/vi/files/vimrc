@@ -1,0 +1,24 @@
+:set nu 
+:set ai 
+:set sw=4 
+:set ts=4 
+:set et!
+:set hls 
+:set incsearch 
+:set ruler 
+:set showmatch 
+:set guioptions-=T
+*:set guioptions-=m
+:set smartindent
+:set backspace=start,indent,eol
+:set nocompatible
+:set guifont=Courier\ 10\ Pitch\ 11
+
+:highlight Normal  guifg=yellow guibg=black 
+:highlight Search  guifg=white  guibg=blue 
+:highlight Visual  guifg=blue   guibg=yellow 
+:highlight comment guifg=cyan
+
+:syntax on
+:set showtabline=2
+

@@ -1,0 +1,4 @@
+<% nfs_exports.each do |export| -%>
+<%= export %> *.<%= nfs_domain %>(<%= nfs_permissions %>)
+<%= export %> <%= nfs_baseIp %>*.(<%= nfs_permissions %>)
+<% end -%>

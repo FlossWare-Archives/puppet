@@ -23,13 +23,14 @@ class yum::centos::rpmforge {
                 }
             }
         }
+
+		default: {
+			fail ( "Cannot process this CentOS version [${lsbmajdistrelease}]" )
     }
 
-    if $RPM {
-        yum::install_repo {
-            "centos-${lsbmajdistrelease}-rpmforge":
-                repoName => "rpmforge",
-                rpm      => "${RPM}",
-        }
-    }
+	yum::install_repo {
+		"centos-${lsbmajdistrelease}-rpmforge":
+			repoName => "rpmforge",
+			rpm      => "${RPM}",
+	}
 }

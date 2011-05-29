@@ -7,13 +7,14 @@ class yum::centos::epel {
         6: {
             $RPM = "http://download.fedora.redhat.com/pub/epel/${lsbmajdistrelease}/${architecture}/epel-release-6-5.noarch.rpm"
         }
+
+		default: {
+			fail ( "Cannot process this CentOS version [${lsbmajdistrelease}]" )
     }
 
-    if $RPM {
-        yum::install_repo {
-            "epel-${lsbmajdistrelease}":
-                repoName => "epel",
-                rpm      => "${RPM}",
-        }
-    }
+	yum::install_repo {
+		"epel-${lsbmajdistrelease}":
+			repoName => "epel",
+			rpm      => "${RPM}",
+	}
 }

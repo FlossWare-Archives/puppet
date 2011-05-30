@@ -16,6 +16,6 @@ class nx {
     exec { "nxsetup":
         command   => "bash -c 'export PATH=/usr/bin:/usr/sbin:/bin:$PATH ; nxsetup --install --setup-nomachine-key'",
         subscribe => Package [ $serverPackages ],
-        path      => ["/usr/bin", "/usr/sbin", "/bin"],
+        path      => "/usr/bin:/usr/sbin:/bin",
     }
 }

@@ -10,6 +10,7 @@ class yum::centos::epel {
 
 		default: {
 			fail ( "Cannot process this CentOS version [${lsbmajdistrelease}]" )
+        }
     }
 
 	yum::install_repo {

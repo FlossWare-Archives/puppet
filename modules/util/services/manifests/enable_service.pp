@@ -1,11 +1,9 @@
-class httpd::server {
+class services::enable_service {
     $packages = [
         "httpd",
     ]
 
-    package { $packages:
-        ensure => installed,
-    }
+	packages::install_package ( $packages = $packages )
 
     service { "httpd":
         ensure  => running,

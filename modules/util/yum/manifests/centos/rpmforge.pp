@@ -30,7 +30,7 @@ class yum::centos::rpmforge {
 
 	yum::install_repo {
 		"centos-${lsbmajdistrelease}-rpmforge":
-			repoName => "rpmforge",
+			repoName => 'rpmforge',
 			rpm      => "${RPM}",
 	}
 }

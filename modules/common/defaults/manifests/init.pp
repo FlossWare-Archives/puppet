@@ -1,13 +1,6 @@
 #    Class: common::variables
 #
-#    This class contains common variables that can be used across modules.  Variables defined here
-#    are either considered common and usable across modules, or defined when 2 or more modules
-#    use said variable.
-#
-#    Variables values can be defined in YAML or defined in the base class Variables.  For FlossWare,
-#    the base class Variables contains no values.  However, for organizations utilizing the 
-#    FlossWare puppet modules, defining the class Variables (and including that first in modulepath),
-#    values can be set there.  If not values are set, "good enough" values are computed for defaults.
+#    This class contains common defaults that can be used in parameterized classes for default values.
 #
 #    Parameters:
 #        netmask:

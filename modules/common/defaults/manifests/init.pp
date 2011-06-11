@@ -42,7 +42,7 @@
 #		execTimeout:
 #			The timeout for most exec statements
 #
-class defaults inherits variables {
+class defaults {
     $netmask = $netmask_eth0
 
     $subnet = $network_eth0
@@ -51,17 +51,17 @@ class defaults inherits variables {
     # The template ComputeNetworkNumber.erb uses the variable computeNetworkNumber
     # in computing the network number.
     #
-    $computeNetworkNumber = $defaultSubnet
+    $computeNetworkNumber = $subnet
 
-    $networkNumber = template ( "common/ComputeNetworkNumber.erb" )
+    $networkNumber = template ( "defaults/ComputeNetworkNumber.erb" )
 
     #
     # The template ComputeReverseNetworkNumber.erb uses the variable computeReverseNetworkNumber
     # in computing the reverse network number.
     #
-    $computeReverseNetworkNumber = $defaultSubnet
+    $computeReverseNetworkNumber = $subnet
 
-    $reverseNetworkNumber = template ( "common/ComputeReverseNetworkNumber.erb" )
+    $reverseNetworkNumber = template ( "defaults/ComputeReverseNetworkNumber.erb" )
 
     $broadcastAddress = "${defaultNetworkNumber}.255"
 
@@ -71,7 +71,7 @@ class defaults inherits variables {
     #
     $computeHostNumber = $ipaddress
 
-    $hostNumber = template ( "common/ComputeHostNumber.erb" )
+    $hostNumber = template ( "defaults/ComputeHostNumber.erb" )
 
     $internalDomain = $domain
 

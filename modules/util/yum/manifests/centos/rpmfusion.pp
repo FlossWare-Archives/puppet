@@ -4,12 +4,13 @@ class yum::centos::rpmfusion {
 
     case $::lsbmajdistrelease {
         5: {
-            FREE_RPM    = 'rpmfusion-free-release-5-0.1.noarch.rpm'
-            NONFREE_RPM = 'rpmfusion-nonfree-release-5-0.1.noarch.rpm'
+            $FREE_RPM    = 'rpmfusion-free-release-5-0.1.noarch.rpm'
+            $NONFREE_RPM = 'rpmfusion-nonfree-release-5-0.1.noarch.rpm'
         }
 
         default: {
             fail ( "Cannot process CentOS version [${lsbmajdistrelease}]" )
+        }
     }
 
     yum::install_repo {

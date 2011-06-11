@@ -1,9 +1,15 @@
-include defaults
+define yum::enable_repo ($repoName = $name, $path = '') {
+    include defaults
 
-define yum::enable_repo ($repoName = $name, $path = $defaults::path) {
+    if $path != '' {
+        $executePath = $path
+    } else {
+        $executePath = $defaults::path
+    }
+
     exec {
 		"${repoName}-enable":
 			command => "yum --enablerepo=${repoName} repolist ${repoName}",
-			path    => "${path}",
+			path    => "${executePath}",
     }
 }

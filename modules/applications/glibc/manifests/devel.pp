@@ -1,6 +1,6 @@
-class glibc {
+class glibc::devel inherit glibc {
     $packages = [
-        "glibc",
+        "glibc-devel",
     ]
 
     package { $packages:

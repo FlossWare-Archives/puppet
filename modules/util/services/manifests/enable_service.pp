@@ -1,11 +1,7 @@
-class services::enable_service {
-    $packages = [
-        "httpd",
-    ]
-
+define services::enable_service ( $service, $packages = '' ) {
 	packages::install_package ( $packages = $packages )
 
-    service { "httpd":
+    service { $service:
         ensure  => running,
         enable  => true,
     }

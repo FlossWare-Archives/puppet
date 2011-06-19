@@ -1,15 +1,15 @@
-define util::mount_dir() {
-    file { $name:
+define util::nfs::mount_dir ($device, $mountName = $name, $options = 'defaults', $fstype='nfs') {
+    file { $mountNname:
         ensure => directory,
     }
 
-    mount { $name:
+    mount { $mountName:
         ensure   => mounted,
-        device   => "${variables::nfs_server}:${name}",
-        fstype   => "nfs",
+        device   => $device,
+        fstype   => $fstype,
         remounts => true,
-        options  => "defaults",
-        name     => "${name}",
+        options  => $options,
+        name     => $mounName,
         atboot   => true,
     }
 }

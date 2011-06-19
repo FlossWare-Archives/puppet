@@ -1,6 +1,7 @@
-class applications::cobbler::koan {
+class library::hunspell {
     $packages = [
-        "koan",
+        "hunspell",
+        "hunspell-en",
     ]
 
     package { $packages:

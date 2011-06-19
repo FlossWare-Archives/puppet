@@ -1,6 +1,6 @@
-class applications::cobbler::koan {
+class library::gtk {
     $packages = [
-        "koan",
+        "gtk",
     ]
 
     package { $packages:

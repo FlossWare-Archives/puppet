@@ -1,6 +1,6 @@
-class applications::cobbler::koan {
+class library::zlib {
     $packages = [
-        "koan",
+        "zlib",
     ]
 
     package { $packages:

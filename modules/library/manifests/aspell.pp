@@ -1,6 +1,6 @@
-class applications::cobbler::koan {
+class library::aspell {
     $packages = [
-        "koan",
+        "aspell",
     ]
 
     package { $packages:

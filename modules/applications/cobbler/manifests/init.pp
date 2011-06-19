@@ -1,4 +1,3 @@
-class cobbler {
-    include cobbler::koan
-	include cobbler::cobblerd
+class applications::cobbler {
+    include applications::cobbler::koan
 }

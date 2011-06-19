@@ -1,6 +1,6 @@
-class applications::cobbler::koan {
+class library::libXaw {
     $packages = [
-        "koan",
+        "libXaw",
     ]
 
     package { $packages:

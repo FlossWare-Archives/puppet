@@ -1,6 +1,6 @@
-class applications::cobbler::koan {
+class library::autoconf {
     $packages = [
-        "koan",
+        "autoconf",
     ]
 
     package { $packages:

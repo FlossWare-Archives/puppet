@@ -1,6 +1,6 @@
-class applications::cobbler::koan {
+class library::glibc {
     $packages = [
-        "koan",
+        "glibc",
     ]
 
     package { $packages:

@@ -1,6 +1,6 @@
-class applications::cobbler::koan {
+class library::automake {
     $packages = [
-        "koan",
+        "automake",
     ]
 
     package { $packages:

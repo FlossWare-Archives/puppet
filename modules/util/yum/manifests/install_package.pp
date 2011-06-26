@@ -1,4 +1,4 @@
-define packages::install_package ( $packages ) {
+define yum::install_package ( $packages ) {
     #
     # Just making sure there are packages to install...
 #

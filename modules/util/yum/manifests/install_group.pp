@@ -1,4 +1,4 @@
-define install_group ( $group, $unless = '', $timeout = '', $path = '' ) {
+define yum::install_group ( $group, $unless = '', $timeout = '', $path = '' ) {
 	include defaults
 	
 	if $timeout != '' {

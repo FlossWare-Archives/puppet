@@ -1,4 +1,4 @@
-define util::install_group ( $group = $name, $unless = '', $timeout = '', $path = '' ) {
+define util::install_group_def ($group = $name, $unless = undef, $timeout = undef, $path = undef) {
 	include defaults
 	
 	if $timeout {

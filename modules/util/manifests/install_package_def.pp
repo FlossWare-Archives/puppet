@@ -1,4 +1,4 @@
-define util::install_package ( $packages ) {
+define util::install_package_def ($packages) {
     #
     # Just making sure there are packages to install...
     #

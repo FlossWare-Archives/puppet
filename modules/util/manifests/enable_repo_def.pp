@@ -1,4 +1,4 @@
-define util::enable_repo ($repoName = $name, $path = '') {
+define util::enable_repo_def ($repoName = $name, $path = undef) {
     include defaults
 
     if $path {

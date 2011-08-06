@@ -1,4 +1,4 @@
-define util::install_remote_repo ($remoteRpm, $repoName = $name, $path = '') {
+define util::install_remote_repo_def ($remoteRpm, $repoName = $name, $path = undef) {
     include defaults
 
     if $path {

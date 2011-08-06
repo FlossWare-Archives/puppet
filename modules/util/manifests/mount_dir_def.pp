@@ -1,4 +1,4 @@
-define util::mount_dir ($device, $mountName = $name, $options = 'defaults', $fstype = 'nfs') {
+define util::mount_dir_def ($device, $mountName = $name, $options = 'defaults', $fstype = 'nfs') {
     file {
         $mountName:
             ensure => directory,

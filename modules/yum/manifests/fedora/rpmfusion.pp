@@ -1,3 +1,9 @@
+# This class will install rpmfusion repos for Fedora.
+#
+# == Authors
+#
+# Scot P. Floess <flossware@gmail.com>
+#
 class yum::fedora::rpmfusion {
 	util::install_remote_repo_def {
 		'fedora-rpmfusion-free':

@@ -1,3 +1,9 @@
+# This class will enable the Fedora everything repo.
+#
+# == Authors
+#
+# Scot P. Floess <flossware@gmail.com>
+#
 class yum::fedora::everything {
     yumrepo {
         'fedora-everything':

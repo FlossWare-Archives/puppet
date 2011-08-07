@@ -1,3 +1,20 @@
+# This class downloads the CentOS rpmforge rpm repo and installs it.
+#
+# == Variables
+#
+# [*$RPM*]
+#     The RPM name to download and install from rpmforge.
+#
+# [*$BASE_URL*]
+#     The base URL from which to download the rpmforge RPM repo.
+#
+# [*$RPM_URL*]
+#     The URL for the RPM to download and install from rpmforge.
+#
+# == Authors
+#
+# Scot P. Floess <flossware@gmail.com>
+#
 class yum::centos::rpmforge {
     case $lsbmajdistrelease {
         5: {
@@ -29,7 +46,6 @@ class yum::centos::rpmforge {
         }
     }
 
-    #$BASE_URL = "http://pkgs.repoforge.org/rpmforge-release/"
     $BASE_URL = 'http://packages.sw.be/rpmforge-release'
     $RPM_URL  = "${BASE_URL}/${RPM}"
 

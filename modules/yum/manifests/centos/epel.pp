@@ -1,3 +1,20 @@
+# This class downloads the CentOS epel rpm repo and installs it.
+#
+# == Variables
+#
+# [*$RPM*]
+#     The name of the RPM to download and install from EPEL.
+#
+# [*$BASE_URL*]
+#     The "base" URL from which to download the EPEL rpm for installation.
+#
+# [*$RPM_URL*]
+#     The actual URL for the RPM to download and install from EPEL.
+#
+# == Authors
+#
+# Scot P. Floess <flossware@gmail.com>
+#
 class yum::centos::epel {
     case $lsbmajdistrelease {
         5: {

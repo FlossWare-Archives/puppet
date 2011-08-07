@@ -1,5 +1,6 @@
 define util::enable_repo_def ($repoName = $name, $path = undef) {
     include defaults
+    notice ( "Enabling [${repoName}]" )
 
     if $path {
         $executePath = $path

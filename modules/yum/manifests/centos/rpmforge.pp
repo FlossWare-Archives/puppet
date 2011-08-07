@@ -26,15 +26,16 @@ class yum::centos::rpmforge {
 
 		default: {
 			fail ( "Cannot process this CentOS version [${lsbmajdistrelease}]" )
+        }
     }
 
     #$BASE_URL = "http://pkgs.repoforge.org/rpmforge-release/"
-    $BASE_URL = "http://packages.sw.be/rpmforge-release"
+    $BASE_URL = 'http://packages.sw.be/rpmforge-release'
     $RPM_URL  = "${BASE_URL}/${RPM}"
 
 	util::install_remote_repo_def {
 		"centos-${lsbmajdistrelease}-rpmforge":
-			repoName => 'rpmforge',
-			rpm      => "${RPM}",
+			repoName  => 'rpmforge',
+			remoteRpm => $RPM_URL,
 	}
 }

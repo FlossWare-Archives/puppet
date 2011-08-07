@@ -22,15 +22,15 @@ class yum::centos::rpmfusion {
 
     util::install_remote_repo_def {
         "centos-${::lsbmajdistrelease}-rpmfusion-free":
-            repoName => 'rpmfusion-free-updates',
-            rpm      => "${FREE_RPM_URL}",
+            repoName  => 'rpmfusion-free-updates',
+            remoteRpm => $FREE_RPM_URL,
     }
 
     $NONFREE_RPM_URL = "${NONFREE_BASE_URL}/${NONFREE_RPM}"
 
     util::install_remote_repo_def {
         "centos-${::lsbmajdistrelease}-rpmfusion-nonfree":
-            repoName => 'rpmfusion-nonfree-updates',
-            rpm      => "${NONFREE_RPM_URL}",
+            repoName  => 'rpmfusion-nonfree-updates',
+            remoteRpm => $NONFREE_RPM_URL,
     }
 }

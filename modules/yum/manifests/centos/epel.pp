@@ -18,7 +18,7 @@ class yum::centos::epel {
 
 	util::install_remote_repo_def {
 		"epel-${lsbmajdistrelease}":
-			repoName => 'epel',
-			rpm      => $RPM_URL,
+			repoName  => 'epel',
+			remoteRpm => $RPM_URL,
 	}
 }

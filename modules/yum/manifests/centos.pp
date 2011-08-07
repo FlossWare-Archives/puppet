@@ -1,5 +1,4 @@
 class yum::centos {
-    include yum::centos::addons
     include yum::centos::centosplus
     include yum::centos::contrib
     include yum::centos::extras

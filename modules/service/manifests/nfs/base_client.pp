@@ -1,4 +1,4 @@
-class nfs::base_client inherits nfs::base {
+class service::nfs::base_client inherits service::nfs::base {
     include service::portmap
 
     util::enable_service_def {

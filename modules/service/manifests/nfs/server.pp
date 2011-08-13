@@ -1,4 +1,4 @@
-class services::nfs::server inherits services::nfs {
+class service::nfs::server inherits service::nfs:base {
     class variables inherits common::varialbles {
         $nfs_defaultExports     = [ "/home", ]
         $nfs_defaultPermissions = "rw,no_root_squash" 

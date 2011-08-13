@@ -1,4 +1,4 @@
-class nfs::base {
+class service::nfs::base {
     $packages = [
         "nfs-utils",
     ]

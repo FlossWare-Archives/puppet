@@ -26,8 +26,7 @@
 #
 define util::enable_service_def ($service = $name, $packages = undef) {
 	util::install_package_def {
-        $service:
-            packages => $packages,
+        $packages:
     }
 
     service {

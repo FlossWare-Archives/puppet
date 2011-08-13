@@ -1,5 +1,5 @@
 # Downloads a remote repo definition and installs it.  If its already been
-# downloaded and installs, nothing is done.
+# downloaded and installed, nothing is done.
 #
 # == Parameters
 #

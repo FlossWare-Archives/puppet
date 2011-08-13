@@ -5,35 +5,36 @@
 # [*$device*]
 #     The remote directory for mounting.
 #
+# [*$fstype*]
+#     The type of mount.  By default is is nfs.
+#
 # [*$mountName*]
 #     The local directory to create and use in mounting.
 #
 # [*$options*]
 #     Options to use for mounting.  By default it is defaults.
 #
-# [*$fstype*]
-#     The type of mount.  By default is is nfs.
-#
 # == Examples
 #
 #    util::mount_dir_def {
 #        'my-remote-nfs-server':
 #            device    => 'remoteserver:/home",
+#            fstype    => 'nfs',
 #            mountName => '/remotehome
 #            options   => 'defaults',
-#            fstype    => 'nfs',
 #    }
 #
 #    util::mount_dir_def {
 #        '/remotehome':
 #            device => 'remoteserver:/home",
+#            fstype => 'nfs',
 #    }
 #
 # == Authors
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::mount_dir_def ($device, $mountName = $name, $options = 'defaults', $fstype = 'nfs') {
+define util::mount_dir_def ($device, $fstype, $mountName = $name, $options = 'defaults') {
     file {
         $mountName:
             ensure => directory,
@@ -46,7 +47,7 @@ define util::mount_dir_def ($device, $mountName = $name, $options = 'defaults', 
             fstype   => $fstype,
             remounts => true,
             options  => $options,
-            name     => $mounName,
+            name     => $mountName,
             atboot   => true,
     }
 }

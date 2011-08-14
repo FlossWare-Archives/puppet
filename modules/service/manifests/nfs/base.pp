@@ -1,4 +1,7 @@
 class service::nfs::base {
+    include service::portmap
+    include service::rpc
+
     $packages = [
         "nfs-utils",
     ]

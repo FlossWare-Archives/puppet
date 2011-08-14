@@ -1,26 +1,12 @@
-class service::nfs::server inherits service::nfs:base {
-    class variables inherits common::varialbles {
-        $nfs_defaultExports     = [ "/home", ]
-        $nfs_defaultPermissions = "rw,no_root_squash" 
-
-        $nfs_exports = $nfs_exports ? {
-            ''      => $nfs_defaultExports,
-            default => $nfs_exports,
-        }
-
-        $nfs_permissions = $nfs_permissions ? {
-            ''      => $nfs_defaultPermissions,
-            default => $nfs_permissions,
-        }
+class service::nfs::server ( $dir, $domain, $permissions ) inherits service::nfs:base {
+    $exportMap = {
+        dir         => $dir,
+        domain      => $domain,
+        permissions => $permissions,
     }
 
-    service { "nfs":
-        ensure  => running,
-        enable  => true,
-    }
-
-    file { "/etc/exports":
-        content => template ( "nfs/exports.erb" ),
-        notify  => Service [ "nfs" ],
+    class {
+        'service::nfs::mapped_server':
+            exportMap => $exportMap,
     }
 }

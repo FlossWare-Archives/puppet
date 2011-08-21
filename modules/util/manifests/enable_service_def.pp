@@ -24,9 +24,9 @@
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::enable_service_def ($service = undef, $packages = undef) {
+define util::enable_service_def ( $service = undef, $packages = undef ) {
 	util::install_package_def {
-        "${name}_${packages}":
+        "util::enable_service_def::${name}_${packages}":
             packages => $packages,
     }
 

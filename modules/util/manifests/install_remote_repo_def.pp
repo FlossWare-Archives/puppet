@@ -42,7 +42,7 @@
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::install_remote_repo_def ($remoteRpm, $repoName = $name, $path = undef) {
+define util::install_remote_repo_def ( $remoteRpm, $repoName = $name, $path = undef ) {
     include defaults
 
     if $path {
@@ -52,7 +52,7 @@ define util::install_remote_repo_def ($remoteRpm, $repoName = $name, $path = und
     }
 
     $tmpRpm   = "/tmp/${repoName}.rpm"
-    $execName = "exec_${repoName}_install" 
+    $execName = "util::install_remote_repo_def::exec_${repoName}_install" 
 
     exec { 
         $execName:

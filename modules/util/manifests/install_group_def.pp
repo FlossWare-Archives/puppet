@@ -47,7 +47,7 @@
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::install_group_def ($group = $name, $unless = undef, $timeout = undef, $path = undef) {
+define util::install_group_def ( $group = $name, $unless = undef, $timeout = undef, $path = undef ) {
 	include defaults
 	
 	if $timeout {
@@ -62,7 +62,7 @@ define util::install_group_def ($group = $name, $unless = undef, $timeout = unde
 		$executePath = $defaults::path
 	}
 
-    $execName = "exec_${name}_${group}"
+    $execName = "util::install_group_def::exec_${name}_${group}"
 
 	if $unless {
 		exec {

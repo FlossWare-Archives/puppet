@@ -6,7 +6,7 @@ class service::rpc {
     }
 
     util::enable_service_def {
-        'service::rpc':
+        'service::rpc::rpc':
             service => $service,
     }
 }

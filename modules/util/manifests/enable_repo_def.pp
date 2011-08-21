@@ -42,7 +42,7 @@ define util::enable_repo_def ($repoName = $name, $path = undef) {
         $executePath = $defaults::path
     }
 
-    $enableRepoName = "exec_${name}_${repoName}"
+    $enableRepoName = "util::enable_repo_def::exec_${name}_${repoName}"
 
     exec {
         $enableRepoName:

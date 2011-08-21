@@ -34,7 +34,7 @@
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::mount_dir_def ($device, $fstype, $mountName = $name, $options = 'defaults') {
+define util::mount_dir_def ( $device, $fstype, $mountName = $name, $options = 'defaults' ) {
     file {
         $mountName:
             ensure => directory,

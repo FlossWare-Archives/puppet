@@ -20,9 +20,9 @@
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-class util::enable_repos ($repoNames) {
+class util::enable_repos ( $repoNames ) {
     util::enable_repo_def {
-        "${name}_${repoNames}":
+        "util::enable_repos::${name}_${repoNames}":
             repoNames => $repoNames,
     }
 }

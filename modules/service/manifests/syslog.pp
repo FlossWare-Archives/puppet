@@ -22,7 +22,7 @@ class service::syslog {
     }
 
     util::enable_service_def {
-        'service::syslog':
+        'service::syslog::syslog':
             service => $service,
     }
 }

@@ -2,19 +2,20 @@
 #
 # == Parameters
 #
-# [*$repoName*]
+# [*repoName*]
 #     The name of the repo to enable.
 #
-# [*$path*]
+# [*path*]
 #     An alternate executable path to use when ensuring the repo is present to enable.
 #
 # == Variables
 #
-# [*$executePath*]
+# [*executePath*]
 #     The executable path to use when ensuring the repo is present for enabling.
 #
-# [*$enableRepoName*]
-#     The name used for exec task.
+# [*enableRepoName*]
+#     The name used when calling exec.  When the repo is added, will also be used to
+#     subscribe enabling the yum repo and enabling it.
 #
 # == Examples
 #
@@ -41,7 +42,7 @@ define util::enable_repo_def ($repoName = $name, $path = undef) {
         $executePath = $defaults::path
     }
 
-    $enableRepoName = "${repoName}-enable"
+    $enableRepoName = "exec_${name}_${repoName}"
 
     exec {
         $enableRepoName:

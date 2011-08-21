@@ -1,9 +1,12 @@
 class service::rpc {
     case $operatingsystem {
         Fedora: {
-            util::enable_service_def {
-                'rpcbind':
-            }
+            $service = 'rpcbind'
         }
+    }
+
+    util::enable_service_def {
+        'service::rpc':
+            service => $service,
     }
 }

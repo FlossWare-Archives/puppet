@@ -12,15 +12,11 @@
 #            packages => [ 'foo', 'bar', 'alpha' ],
 #    }
 #
-#    util::install_package_def {
-#        'foo':
-#    }
-#
 # == Authors
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::install_package_def ($packages = $name) {
+define util::install_package_def ($packages = undef) {
     #
     # Just making sure there are packages to install...
     #

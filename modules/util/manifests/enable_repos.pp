@@ -2,13 +2,14 @@
 #
 # == Parameters
 #
-# [*$repoName*]
+# [*repoName*]
 #     The name of the repo to enable.
 #
 # == Examples
 #
 #    util::enable_repos {
-#        repoName => 'centosplus',
+#        'mycentosplus':
+#            repoName => 'centosplus',
 #    }
 #
 #    util::enable_repos {
@@ -21,6 +22,7 @@
 #
 class util::enable_repos ($repoNames) {
     util::enable_repo_def {
-        $repoNames:
+        "${name}_${repoNames}":
+            repoNames => $repoNames,
     }
 }

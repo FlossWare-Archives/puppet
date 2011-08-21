@@ -24,14 +24,17 @@
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::enable_service_def ($service = $name, $packages = undef) {
+define util::enable_service_def ($service = undef, $packages = undef) {
 	util::install_package_def {
-        $packages:
+        "${name}_${packages}":
+            packages => $packages,
     }
 
-    service {
-        $service:
-            ensure  => running,
-            enable  => true,
+    if $service {
+        service {
+            $service:
+                ensure  => running,
+                enable  => true,
+        }
     }
 }

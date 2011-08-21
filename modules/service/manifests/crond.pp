@@ -1,6 +1,7 @@
 class service::crond {
     util::enable_service_def {
-        'crond':
+        'service::crond':
+            service => 'crond',
     }
 }
 

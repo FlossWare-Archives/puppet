@@ -21,7 +21,8 @@ class service::portmap {
     }
 
     util::enable_service_def {
-        $serviceName:
-            packages => $packageName
+        "service::portmap":
+            service  => $serviceName,
+            packages => $packageName,
     }
 }

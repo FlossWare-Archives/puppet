@@ -23,7 +23,8 @@ class service::nfs::base {
     ]
 
     util::enable_service_def {
-        'nfslock':
+        'service::nfs::base::nfslock':
+            service  => 'nfslock',
             packages => $packages,
     }
 }

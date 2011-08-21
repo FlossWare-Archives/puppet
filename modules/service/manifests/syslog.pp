@@ -1,4 +1,4 @@
-class services::syslog {
+class service::syslog {
     case $::operatingsystem {
         CentOS: {
             case $::operatingsystemrelease {
@@ -22,6 +22,7 @@ class services::syslog {
     }
 
     util::enable_service_def {
-        $service:
+        'service::syslog':
+            service => $service,
     }
 }

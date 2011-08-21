@@ -62,7 +62,7 @@ define util::install_group_def ($group = $name, $unless = undef, $timeout = unde
 		$executePath = $defaults::path
 	}
 
-    $execName = "exec-${group}"
+    $execName = "exec_${name}_${group}"
 
 	if $unless {
 		exec {

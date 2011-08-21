@@ -1,3 +1,18 @@
+# Enables syslog service (rsyslog for Fedora and newer CentOS).
+#
+# == Parameters
+#
+# == Variables
+#
+# [*service*]
+#   The service to start.  Based on operating system.
+#
+# == Examples
+#
+# == Authors
+#
+# Scot P. Floess <flossware@gmail.com>
+#
 class service::syslog {
     case $::operatingsystem {
         CentOS: {
@@ -22,7 +37,7 @@ class service::syslog {
     }
 
     util::enable_service_def {
-        'service::syslog::syslog':
+        "service::syslog::${service}":
             service => $service,
     }
 }

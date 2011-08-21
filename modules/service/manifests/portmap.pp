@@ -1,27 +1,43 @@
+# Enables portmap service (portreserve for Fedora and newer CentOS).  Also
+# ensures the correct package is installed.
+#
+# == Parameters
+#
+# == Variables
+#
+# [*service*]
+#   The service to start.  Based on operating system.
+#
+# == Examples
+#
+# == Authors
+#
+# Scot P. Floess <flossware@gmail.com>
+#
 class service::portmap {
     case $operatingsystem {
         CentOS: {
             case $operatingsystemrelease {
                 5.6: {
-                    $packageName = "portmap"
                     $serviceName = "portmap"
+                    $packageName = "portmap"
                 }
 
                 default: {
-                    $packageName = "portreserve"
                     $serviceName = "portreserve"
+                    $packageName = "portreserve"
                 }
             }
         }
 
         Fedora: {
-            $packageName = "portreserve"
             $serviceName = "portreserve"
+            $packageName = "portreserve"
         }
     }
 
     util::enable_service_def {
-        'service::portmap::portmap':
+        "service::portmap::${serviceName}":
             service  => $serviceName,
             packages => $packageName,
     }

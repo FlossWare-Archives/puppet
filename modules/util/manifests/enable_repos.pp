@@ -22,7 +22,7 @@
 #
 class util::enable_repos ( $repoNames ) {
     util::enable_repo_def {
-        "util::enable_repos::${name}_${repoNames}":
-            repoNames => $repoNames,
+        "util::enable_repos::${repoNames}":
+            repoName => $repoNames,
     }
 }

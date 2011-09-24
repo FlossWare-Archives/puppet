@@ -42,18 +42,19 @@ define util::enable_repo_def ($repoName = $name, $path = undef) {
         $executePath = $defaults::path
     }
 
-    $enableRepoName = "util::enable_repo_def::exec_${name}_${repoName}"
+    $execName = "util::enable_repo_def::exec_${name}_${repoName}"
 
     exec {
-        $enableRepoName:
-            unless => "yum --enablerepo=${repoName} repolist ${repoName}",
-            path   => $executePath,
+        $execName:
+            command => "echo NOT FOUND",
+            unless  => "yum --enablerepo=${repoName} repolist ${repoName}",
+            path    => $executePath,
     }   
 
     yumrepo {
         $repoName:
             enabled => 1,
 
-        subscribe => Exec [ $enableRepoName ],
+        subscribe => Exec [ $execName ],
     }
 }

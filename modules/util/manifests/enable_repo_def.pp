@@ -46,15 +46,8 @@ define util::enable_repo_def ($repoName = $name, $path = undef) {
 
     exec {
         $execName:
-            command => "echo NOT FOUND",
-            unless  => "yum --enablerepo=${repoName} repolist ${repoName}",
+            command => "sed -i -e \"s/\\(\\(enabled\\s*=\\)\\s*\\).*/\\11/\" /etc/yum.repos.d/${repoName}.repo",
+            onlyif  => "yum --enablerepo=${repoName} repolist ${repoName}",
             path    => $executePath,
     }   
-
-    yumrepo {
-        $repoName:
-            enabled => 1,
-
-        subscribe => Exec [ $execName ],
-    }
 }

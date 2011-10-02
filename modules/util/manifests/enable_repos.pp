@@ -9,11 +9,11 @@
 #
 #    util::enable_repos {
 #        'mycentosplus':
-#            repoName => 'centosplus',
+#            repoNames => 'centosplus',
 #    }
 #
 #    util::enable_repos {
-#        repoName => ['centosplus','contrib'],
+#        repoNames => ['centosplus','contrib'],
 #    }
 #
 # == Authors

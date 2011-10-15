@@ -39,9 +39,10 @@
 # Scot P. Floess <flossware@gmail.com>
 #
 class service::nfs::mapped_server ( $exportMap ) inherits service::nfs:base {
-    util::enable_service_def {
-        'service::nfs::mapped_server':
-            service => 'nfs',
+    service {
+        'nfs':
+            ensure  => running,
+            enable  => true,
     }
 
     file {

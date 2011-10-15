@@ -5,9 +5,6 @@
 #
 # == Variables
 #
-# [*packages*]
-#   The base NFS packages for installation.
-#
 # == Examples
 #
 # == Authors
@@ -18,14 +15,10 @@ class service::nfs::base {
     include service::portmap
     include service::rpc
 
-    $packages = [
-        "nfs-utils",
-    ]
-
     util::enable_service_def {
         'service::nfs::base::nfslock':
             service  => 'nfslock',
-            packages => $packages,
+            packages => 'nfs-utils',
     }
 }
 

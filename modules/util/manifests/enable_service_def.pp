@@ -16,25 +16,19 @@
 #            packages => [ 'yp-tools', 'ypbind' ],
 #    }
 #
-#    util::enable_service_def {
-#        'ypbind':
-#    }
-#
 # == Authors
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::enable_service_def ( $service = undef, $packages = undef ) {
-	util::install_package_def {
-        "util::enable_service_def::${name}_${packages}":
-            packages => $packages,
+define util::enable_service_def ( $service, $packages ) {
+    package {
+        $packages:
+            ensure => installed,
     }
 
-    if $service {
-        service {
-            $service:
-                ensure  => running,
-                enable  => true,
-        }
+    service {
+        $service:
+            ensure  => running,
+            enable  => true,
     }
 }

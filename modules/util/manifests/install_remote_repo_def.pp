@@ -52,7 +52,7 @@ define util::install_remote_repo_def ( $remoteRpm, $repoName = $name, $path = un
     }
 
     $tmpRpm   = "/tmp/${repoName}.rpm"
-    $execName = "util::install_remote_repo_def::exec_${repoName}_install" 
+    $execName = "util::install_remote_repo_def::exec::${repoName}_install" 
 
     exec { 
         $execName:

@@ -4,11 +4,11 @@
 #
 # == Parameters
 #
-# [*$group*]
-#     The name of the rpm group package to install.
-#
 # [*$unless*]
 #     The name of an app, that if found will not attempt to install $group.
+#
+# [*$group*]
+#     The name of the rpm group package to install.
 #
 # [*$timeout*]
 #     When installing an RPM group, the maximum time allowed for installation.
@@ -39,15 +39,11 @@
 #            unless  => 'startkde',
 #    }
 #
-#    util::install_group_def {
-#        'kde-desktop':
-#    }
-#
 # == Authors
 #
 #     Scot P. Floess <flossware@gmail.com>
 #
-define util::install_group_def ( $group = $name, $unless = undef, $timeout = undef, $path = undef ) {
+define util::install_group_def ( $unless, $group = $name, $timeout = undef, $path = undef ) {
 	include defaults
 	
 	if $timeout {
@@ -62,24 +58,14 @@ define util::install_group_def ( $group = $name, $unless = undef, $timeout = und
 		$executePath = $defaults::path
 	}
 
-    $execName = "util::install_group_def::exec_${name}_${group}"
+    $execName = "util::install_group_def::exec::${name}_${group}"
 
-	if $unless {
-		exec {
-            $execName:
-                command    => "yum groupinstall -y ${group}",
-                cwd        => "/",
-                timeout    => $executeTimeout,
-                unless     => "which ${unless}",
-                path       => $executePath,
-		}   
-	} else {
-		exec {
-            $execName:
-                command    => "yum groupinstall -y ${group}",
-                cwd        => "/",
-                timeout    => $executeTimeout,
-                path       => $executePath,
-		}   
-	}
+    exec {
+        $execName:
+            command    => "yum groupinstall -y ${group}",
+            cwd        => "/",
+            timeout    => $executeTimeout,
+            unless     => "which ${unless}",
+            path       => $executePath,
+    }   
 }

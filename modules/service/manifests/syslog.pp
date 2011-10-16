@@ -16,8 +16,8 @@
 class service::syslog {
     case $::operatingsystem {
         CentOS: {
-            case $::operatingsystemrelease {
-                5.6: {
+            case $::lsbmajdistrelease {
+                5: {
                     $service = "syslog"
                 }
 
@@ -36,8 +36,9 @@ class service::syslog {
         }
     }
 
-    util::enable_service_def {
-        "service::syslog::${service}":
-            service => $service,
+    service {
+        $service:
+            ensure  => running,
+            enable  => true,
     }
 }

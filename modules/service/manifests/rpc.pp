@@ -14,22 +14,25 @@
 # Scot P. Floess <flossware@gmail.com>
 #
 class service::rpc {
-    case $operatingsystem {
+    case $::operatingsystem {
         CentOS: {
-            case $operatingsystemrelease {
-                6.0: {
-                    $service = 'rpcbind'
+            case $::lsbmajdistrelease {
+                6: {
+                    service {
+                        'rpcbind':
+                            ensure  => running,
+                            enable  => true,
+                    }
                 }
             }
         }
 
         Fedora: {
-            $service = 'rpcbind'
+            service {
+                'rpcbind':
+                    ensure  => running,
+                    enable  => true,
+            }
         }
-    }
-
-    util::enable_service_def {
-        'service::rpc::rpc':
-            service => $service,
     }
 }

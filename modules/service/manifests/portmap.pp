@@ -15,10 +15,10 @@
 # Scot P. Floess <flossware@gmail.com>
 #
 class service::portmap {
-    case $operatingsystem {
+    case $::operatingsystem {
         CentOS: {
-            case $operatingsystemrelease {
-                5.6: {
+            case $::lsbmajdistrelease {
+                5: {
                     $serviceName = "portmap"
                     $packageName = "portmap"
                 }

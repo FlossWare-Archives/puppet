@@ -130,7 +130,7 @@
 <font NAME="SansSerif" SIZE="14"/>
 </node>
 </node>
-<node COLOR="#00b439" CREATED="1318694791306" ID="ID_627793073" MODIFIED="1318694797266" TEXT="Yaml">
+<node COLOR="#00b439" CREATED="1318957227740" ID="ID_1484225723" MODIFIED="1318957233600" TEXT="Definition">
 <edge STYLE="bezier" WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="16"/>
 <node COLOR="#990000" CREATED="1318694798636" ID="ID_1431806785" MODIFIED="1318694808544" TEXT="single entry">
@@ -142,7 +142,75 @@
 <font NAME="SansSerif" SIZE="14"/>
 <node COLOR="#111111" CREATED="1318694815643" ID="ID_209087345" MODIFIED="1318696041459" TEXT="multi entry">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#111111" CREATED="1318694820224" ID="ID_617017879" MODIFIED="1318694822375" TEXT="hash"/>
+<node COLOR="#111111" CREATED="1318956991540" ID="ID_133220968" MODIFIED="1318956993279" TEXT="entry">
+<node COLOR="#111111" CREATED="1318956933760" ID="ID_821920383" MODIFIED="1318957141709">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      package::class
+    </p>
+    <p>
+      &#160;&#160;variables:
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;- value1
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;- value2
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;- value3
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node COLOR="#111111" CREATED="1318957034760" ID="ID_1867798686" MODIFIED="1318957204110">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      class foo ( $variables&#160;) {
+    </p>
+    <p>
+      &#160;&#160;// Iterate over each entry
+    </p>
+    <p>
+      &#160;&#160;foo_def {
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;$variables:
+    </p>
+    <p>
+      &#160;&#160;}
+    </p>
+    <p>
+      }
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node COLOR="#111111" CREATED="1318957205540" ID="ID_310886906" MODIFIED="1318957217740">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#160;define foo_def ( $variable = $name ) {
+    </p>
+    <p>
+      }
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node COLOR="#111111" CREATED="1318694820224" ID="ID_617017879" MODIFIED="1318694822375" TEXT="hash">
 <node COLOR="#111111" CREATED="1318694846735" ID="ID_626755840" MODIFIED="1318694967721">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -169,6 +237,7 @@
     </p>
   </body>
 </html></richcontent>
+</node>
 </node>
 </node>
 </node>

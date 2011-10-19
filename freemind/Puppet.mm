@@ -140,9 +140,11 @@
 </node>
 <node COLOR="#990000" CREATED="1318696035872" ID="ID_494267056" MODIFIED="1318696039764" TEXT="sequence">
 <font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1318984224129" ID="ID_534361750" MODIFIED="1318984245973" TEXT="define iteration occurs when using name"/>
 <node COLOR="#111111" CREATED="1318694815643" ID="ID_209087345" MODIFIED="1318696041459" TEXT="multi entry">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#111111" CREATED="1318956991540" ID="ID_133220968" MODIFIED="1318956993279" TEXT="entry">
+<node COLOR="#111111" CREATED="1318956991540" ID="ID_133220968" MODIFIED="1318983098735" TEXT="array">
+<node COLOR="#111111" CREATED="1318983113193" ID="ID_1102546563" MODIFIED="1318983114754" TEXT="yaml">
 <node COLOR="#111111" CREATED="1318956933760" ID="ID_821920383" MODIFIED="1318957141709">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -167,20 +169,22 @@
   </body>
 </html></richcontent>
 </node>
-<node COLOR="#111111" CREATED="1318957034760" ID="ID_1867798686" MODIFIED="1318957204110">
+</node>
+<node COLOR="#111111" CREATED="1318983118266" ID="ID_1251247578" MODIFIED="1318983127319" TEXT="manifest">
+<node COLOR="#111111" CREATED="1318957034760" ID="ID_1867798686" MODIFIED="1318984389422">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      class foo ( $variables&#160;) {
+      class thing ( $variables&#160;) {
     </p>
     <p>
       &#160;&#160;// Iterate over each entry
     </p>
     <p>
-      &#160;&#160;foo_def {
+      &#160;&#160;thing_def {
     </p>
     <p>
       &#160;&#160;&#160;&#160;$variables:
@@ -192,25 +196,29 @@
       }
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node COLOR="#111111" CREATED="1318957205540" ID="ID_310886906" MODIFIED="1318957217740">
+<node COLOR="#111111" CREATED="1318957205540" ID="ID_310886906" MODIFIED="1318984398566">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      &#160;define foo_def ( $variable = $name ) {
+      &#160;define thing_def ( $variable = $name ) {
     </p>
     <p>
       }
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
+</node>
 </node>
 </node>
 <node COLOR="#111111" CREATED="1318694820224" ID="ID_617017879" MODIFIED="1318694822375" TEXT="hash">
+<node COLOR="#111111" CREATED="1318983133559" ID="ID_1523334702" MODIFIED="1318983136356" TEXT="yaml">
 <node COLOR="#111111" CREATED="1318694846735" ID="ID_626755840" MODIFIED="1318694967721">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -237,6 +245,162 @@
     </p>
   </body>
 </html></richcontent>
+</node>
+</node>
+<node COLOR="#111111" CREATED="1318983138980" ID="ID_1215422458" MODIFIED="1318983140922" TEXT="manifest">
+<node COLOR="#111111" CREATED="1318983673192" ID="ID_120780717" MODIFIED="1318983955591">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      class mapped_thing ( $map ) {
+    </p>
+    <p>
+      &#160;&#160;mapped_thing_def {
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&quot;someName::${map}&quot;:
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;map =&gt; $map
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;}
+    </p>
+    <p>
+      &#160;&#160;}
+    </p>
+    <p>
+      }
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node COLOR="#111111" CREATED="1318984123148" ID="ID_1509708292" MODIFIED="1318984125950" TEXT="Or">
+<node COLOR="#111111" CREATED="1318984128837" ID="ID_980423077" MODIFIED="1318985119947">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      class thing ( $value1, $value2 ) {
+    </p>
+    <p>
+      &#160;&#160;$map = {
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;value1 =&gt; $value1,
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;value2 =&gt; $value2,
+    </p>
+    <p>
+      &#160;&#160;}
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      &#160;&#160;class {
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;'thing::mapped_thing':
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;&#160;map =&gt; $map,
+    </p>
+    <p>
+      &#160;&#160;}
+    </p>
+    <p>
+      }
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node COLOR="#111111" CREATED="1318984048182" ID="ID_286346638" MODIFIED="1318984113024">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      class thing ( $value1, $value2 ) {
+    </p>
+    <p>
+      &#160;&#160;thing_def {
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;'thing::thing_def':
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;value1 =&gt; $value1,
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;value2 =&gt; $value2,
+    </p>
+    <p>
+      &#160;&#160;}
+    </p>
+    <p>
+      }
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node COLOR="#111111" CREATED="1318983766480" ID="ID_1997490003" MODIFIED="1318984857937">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      define mapped_thing_def ( $map = $name ) {
+    </p>
+    <p>
+      &#160;&#160;thing_def {
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;${map}:
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;&#160;value1 =&gt; $map [ 'key1' ],
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;&#160;value2 =&gt; $map [ 'key2' ],
+    </p>
+    <p>
+      &#160;&#160;}
+    </p>
+    <p>
+      }
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node COLOR="#111111" CREATED="1318983900931" ID="ID_367001301" MODIFIED="1318983993065">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      class thing_def (&#160;$value1, $value2 ) {
+    </p>
+    <p>
+      }
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 </node>
 </node>
 </node>

@@ -1,0 +1,16 @@
+$ORIGIN .
+$TTL <%= ttl %>      ; 1 day
+
+<%= reverseSubIp %>.in-addr.arpa IN SOA <% server %>. (
+                                                                                1997023074 ; serial
+                                                                                28800      ; refresh (8 hours)
+                                                                                14400      ; retry (4 hours)
+                                                                                3600000    ; expire (5 weeks 6 days 16 hours)
+                                                                                86400      ; minimum (1 day)
+                                                                               )
+                                                                               NS	<% server %>.
+$ORIGIN <%= reverseSubIp %>.in-addr.arpa.            
+
+<% hosts.each |host| -%>
+    <%= host [ "subIp" ] %> PTR <%= host [ "name" ] %>.<%= domain %>.
+<% end -%>

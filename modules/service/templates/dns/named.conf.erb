@@ -1,0 +1,18 @@
+options {
+	directory "/etc/named";
+
+	listen-on { <%= listenOn %> };
+
+	forwarders { <%= forwarders %> };
+};
+
+<% zones.each do |zone| -%>
+zone "<%= zone %>" IN {
+	type master;
+	file "<%= zone %>";
+    notify yes;
+    <% if allowUpdate then %>
+    allow-update { <%= allowUpdate %> };
+    <% end>
+};
+<% end -%>

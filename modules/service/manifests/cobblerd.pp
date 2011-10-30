@@ -13,18 +13,20 @@
 #   
 # Scot P. Floess <flossware@gmail.com>
 #
-class services::cobblerd {
+class service::cobblerd {
+    include service::httpd
+
     $packages = [
-        "yum-utils",
         "cobbler",
         "cobbler-web",
+        "koan",
+        "yum-utils",
     ]
 
     util::enable_service_def {
-        'services::cobblerd::service':
-            service  => 'httpd',
+        'service::cobblerd':
+            service  => 'cobblerd',
             packages => $packages,
+            notify   => Service [ 'httpd' ],
     }
-
-    include services::httpd
 }

@@ -13,13 +13,13 @@
 #   
 # Scot P. Floess <flossware@gmail.com>
 #   
-class services::httpd {
+class service::httpd {
     $packages = [
         "httpd",
     ]
 
     util::enable_service_def {
-        'services::httpd::service':
+        'service::httpd':
             service  => 'httpd',
             packages => $packages,
     }

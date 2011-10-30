@@ -22,14 +22,14 @@
 #   
 # Scot P. Floess <flossware@gmail.com>
 #   
-class service::ntp ( $server, $minpoll, $maxpoll, $broadcast = undef ) {
+class service::ntp ( $server, $minpoll, $maxpoll, $broadcast = '' ) {
     util::enable_service_def {
-        'service::ntp::service':
+        'service::ntp':
             service  => 'ntpd',
             packages => 'ntp',
     }
 
-    // Want to enable ntpdate if possible...
+    # Want to enable ntpdate if possible...
     case $::operatingsystem {
         CentOS: {
             case $::lsbmajdistrelease {
@@ -55,7 +55,7 @@ class service::ntp ( $server, $minpoll, $maxpoll, $broadcast = undef ) {
 
     file {
         '/etc/ntp.conf':
-            content => template ( 'service/ntp/ntp.conf' ),
+            content => template ( 'service/ntp/ntp.conf.erb' ),
             notify  => Service [ 'ntpd' ]
     }
 }

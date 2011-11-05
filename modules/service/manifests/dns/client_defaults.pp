@@ -4,6 +4,9 @@
 #   
 # == Variables
 #   
+# [*$nameServer*]
+#   The actual name server.
+#   
 # [*$domain*]
 #   The domain that the client belongs to.
 #   
@@ -17,7 +20,8 @@
 # Author Name <author@domain.com>
 #   
 class service::dns::client_defaults {
-    $domain = $defaults::internalDomain
-    $search = $defaults::internalDomain
+    $nameServer = $defaults::gatewayIp
+    $domain     = $defaults::internalDomain
+    $search     = $defaults::internalDomain
 }
 

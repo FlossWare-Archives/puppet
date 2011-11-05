@@ -29,18 +29,20 @@
 #   
 # Author Name <author@domain.com>
 #   
-class services::dns::server ( $listenOn, $forwarders, $zones, $parentServer, $reverseSubIp, $server = $::fqdn, $domain = ::$domain, $ttl = '86400' ) inherits services::dns::server_defaults {
-    $packages = [
-        "bind",
-    ]
-
-    package { $packages:
-        ensure => installed,
-    }
-
-    service { "named":
-        ensure  => running,
-        enable  => true,
+class service::dns::server ( 
+    $zones,
+    $listenOn             = $service::dns::server_defaults::listenOn,
+    $forwarders           = $service::dns::server_defaults::forwarders,
+    $parentServer         = $service::dns::server_defaults::parentServer,
+    $reverseNetworkNumber = $service::dns::server_defaults::reverseNetworkNumber,
+    $server               = $service::dns::server_defaults::server,
+    $domain               = $service::dns::server_defaults::domain,
+    $ttl                  = $service::dns::server_defaults::ttl
+) inherits services::dns::server_defaults {
+    util::enable_service_def {
+        "${name}::named":
+            packages => 'bind',
+            service  => 'named',
     }
 
     service::dns::domain_zone_def {

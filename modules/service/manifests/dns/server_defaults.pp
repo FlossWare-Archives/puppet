@@ -4,7 +4,7 @@
 #   
 # == Variables
 #   
-# [*reverseNetworkNumber*]
+# [*$reverseNetworkNumber*]
 #   The reverse network number (values in reverse order of networkNumber) - for example in 102.168.168.252, the reverseNetworkNumber is 168.168.192
 #   
 # [*$server*]
@@ -13,7 +13,7 @@
 # [*$domain*]
 #   The domain for which the name server serves host names.
 #   
-# [*$rrl*]
+# [*$ttl*]
 #   The time to live value.
 #   
 # == Examples
@@ -22,8 +22,13 @@
 #   
 # Author Name <author@domain.com>
 #   
-class services::dns::server_defaults {
+class service::dns::server_defaults {
     $localHost            = '127.0.0.1'
+
+    $listenOn             = $::ipaddress
+    $forwarders           = $defaults::gatewayIp
+    $allowUpdate          = "${::ipaddress}; ${localHost};"
+
     $ttl                  = '86400'
     $notify               = 'yes'
 
@@ -31,7 +36,4 @@ class services::dns::server_defaults {
     $parentServer         = $defaults::gatewayIp
     $server               = $::fqdn
     $domain               = $defaults::internalDomain
-    $forwarders           = $defaults::gatewayIp
-    $listenOn             = $::ipaddress
-    $allowUpdate          = "${::ipaddress}; ${localHost};"
 }

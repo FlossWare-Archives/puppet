@@ -29,16 +29,8 @@
 #   
 # Author Name <author@domain.com>
 #   
-class service::dns::client (
-    $nameServer = $service::dns::client_defaults::nameServer,
-    $domain     = $service::dns::client_defaults::domain,
-    $search     = $service::dns::client_defaults::search,
-) inherits service::dns::client_defaults {
-    $content = template ( "service/dns/resolv.conf.erb" )
-
-    file {
-        '/etc/resolv.conf':
-            content => $content,
-    }
+class service::dns::print_client inherits service::dns::client {
+    notice ( "nameServer [${nameServer}]  domain [${domain}]  search [${search}]" )
+    notice ( "content:  ${content}" )
 }
 

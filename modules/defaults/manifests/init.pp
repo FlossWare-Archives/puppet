@@ -26,15 +26,6 @@
 # [*$externalDomain*]
 #     The external domain used outside of this network - for example flossware.homelinux.org
 #
-# [*$masterHost*]
-#     The master server host name on this network.
-#
-# [*$masterHostIp*]
-#     The IP address of the master server on this network.
-#
-# [*$masterHostFqdn:
-#     The fully qualified name of the master server on this network.
-#
 # [*$gatewayIp*]
 #     The IP address of the gateway on this network.
 #
@@ -78,10 +69,6 @@ class defaults {
 
     $internalDomain = $::domain
     $externalDomain = $::domain
-
-    $masterHost = $::hostname
-    $masterIp   = $::ipaddress
-    $masterFqdn = $::fqdn
 
     $gatewayIp = $::ipaddress
 

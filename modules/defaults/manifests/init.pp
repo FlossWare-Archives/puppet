@@ -46,47 +46,44 @@
 # Scot P. Floess <flossware@gmail.com>
 #
 class defaults {
-    $netmask = $netmask_eth0
-
-    $subnet = $network_eth0
+    $netmask = $::netmask_eth0
+    $subnet  = $::network_eth0
 
     #
     # The template ComputeNetworkNumber.erb uses the variable computeNetworkNumber
     # in computing the network number.
     #
     $computeNetworkNumber = $subnet
-
-    $networkNumber = template ( "defaults/ComputeNetworkNumber.erb" )
+    $networkNumber        = template ( "defaults/ComputeNetworkNumber.erb" )
 
     #
     # The template ComputeReverseNetworkNumber.erb uses the variable computeReverseNetworkNumber
     # in computing the reverse network number.
     #
     $computeReverseNetworkNumber = $subnet
+    $reverseNetworkNumber        = template ( "defaults/ComputeReverseNetworkNumber.erb" )
 
-    $reverseNetworkNumber = template ( "defaults/ComputeReverseNetworkNumber.erb" )
-
-    $broadcastAddress = "${defaultNetworkNumber}.255"
+    #
+    # The broadcast address is the default network number.255
+    #
+    $broadcastAddress = "${networkNumber}.255"
 
     #
     # The template ComputeHostNumber.erb uses the variable computeHostNumber
     # in computing the host number...
     #
-    $computeHostNumber = $ipaddress
+    $computeHostNumber = $::ipaddress
 
     $hostNumber = template ( "defaults/ComputeHostNumber.erb" )
 
-    $internalDomain = $domain
+    $internalDomain = $::domain
+    $externalDomain = $::domain
 
-    $externalDomain = $domain
+    $masterHost = $::hostname
+    $masterIp   = $::ipaddress
+    $masterFqdn = $::fqdn
 
-    $masterHost = $hostname
-
-    $masterIp = $ipaddress
-
-    $masterFqdn = $fwdn
-
-    $gatewayIp = $ipaddress
+    $gatewayIp = $::ipaddress
 
     $execTimeout = '601800'
 

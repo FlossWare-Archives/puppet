@@ -1,6 +1,6 @@
 $ORIGIN .
 $TTL <%= ttl %>
-<% domain %>		IN SOA	<%= server %>. root.<%= domain %>. (
+<% domain -%>		IN SOA	<%= server -%>. root.<%= domain -%>. (
 				2000092153 ; serial
 				10800      ; refresh (3 hours)
 				900        ; retry (15 minutes)
@@ -12,14 +12,14 @@ $TTL <%= ttl %>
                 A	<%= parentServer %>
 <% end -%>
 
-$ORIGIN <%= domain %>.
+$ORIGIN <%= domain -%>.
 
 <% hosts.each |host| -%>
-    <%= host [ "name" ] %> A <%= baseIp %>.<%= host [ "subIp" ] %>
+    <%= host [ "name" ] %> A <%= baseIp %>.<%= host [ "subIp" ] -%>
 
-    <% if host [ "cname" ] %>
+    <% if host [ "cname" ] -%>
         <% host [ "cname" ].each |cname| -%>
             <%= cname %> CNAME <%= host [ "name" ] %>
         <% end -%>
-    <% end %>
+    <% end -%>
 <% end -%>

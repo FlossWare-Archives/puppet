@@ -32,7 +32,7 @@
 class service::dns::client (
     $nameServer = $service::dns::client_defaults::nameServer,
     $domain     = $service::dns::client_defaults::domain,
-    $search     = $service::dns::client_defaults::search,
+    $search     = $service::dns::client_defaults::search
 ) inherits service::dns::client_defaults {
     file {
         '/etc/resolv.conf':

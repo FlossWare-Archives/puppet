@@ -1,15 +1,33 @@
 # This defines a DNS server
 #   
 # == Parameters
+#  
+# [*$localHost*]
+#   The IP address for local host.
 #   
-# [*nameServer*]
-#   The name server host for resolving hosts.
+# [*$listenOn*]
+#   The address to listen upon to resolve names.
 #   
-# [*domain*]
-#   The domain that the client belongs to.
+# [*$forwarders*]
+#   The address to forward requests to when names can't be resolved.
 #   
-# [*search*]
-#   The domain to search when resolving hosts.
+# [*$allowUpdate*]
+#   Address(es) to accept updates from.
+#  
+# [*$ttl*]
+#   The time to live value.
+#     
+# [*$notify*]
+#   The time to live value.
+#     
+# [*$reverseNetworkNumber*]
+#   The reverse network number (values in reverse order of networkNumber) - for example in 102.168.168.252, the reverseNetworkNumber is 168.168.192
+#   
+# [*$server*]
+#   The name of the server acting as the name server.
+#   
+# [*$domain*]
+#   The domain for which the name server serves host names.
 #   
 # == Variables
 #   
@@ -33,11 +51,13 @@ class service::dns::server (
     $zones,
     $listenOn             = $service::dns::server_defaults::listenOn,
     $forwarders           = $service::dns::server_defaults::forwarders,
-    $parentServer         = $service::dns::server_defaults::parentServer,
+    $allowUpdate          = $service::dns::server_defaults::allowUpdate,
+    $ttl                  = $service::dns::server_defaults::ttl,
+    $notify               = $service::dns::server_defaults::notify,
+
     $reverseNetworkNumber = $service::dns::server_defaults::reverseNetworkNumber,
     $server               = $service::dns::server_defaults::server,
-    $domain               = $service::dns::server_defaults::domain,
-    $ttl                  = $service::dns::server_defaults::ttl
+    $domain               = $service::dns::server_defaults::domain
 ) inherits services::dns::server_defaults {
     util::enable_service_def {
         "${name}::named":

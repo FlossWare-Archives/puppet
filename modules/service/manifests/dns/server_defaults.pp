@@ -4,6 +4,24 @@
 #   
 # == Variables
 #   
+# [*$localHost*]
+#   The IP address for local host.
+#   
+# [*$listenOn*]
+#   The address to listen upon to resolve names.
+#   
+# [*$forwarders*]
+#   The address to forward requests to when names can't be resolved.
+#   
+# [*$allowUpdate*]
+#   Address(es) to accept updates from.
+#  
+# [*$ttl*]
+#   The time to live value.
+#     
+# [*$notify*]
+#   The time to live value.
+#     
 # [*$reverseNetworkNumber*]
 #   The reverse network number (values in reverse order of networkNumber) - for example in 102.168.168.252, the reverseNetworkNumber is 168.168.192
 #   
@@ -12,10 +30,7 @@
 #   
 # [*$domain*]
 #   The domain for which the name server serves host names.
-#   
-# [*$ttl*]
-#   The time to live value.
-#   
+#  
 # == Examples
 #   
 # == Authors
@@ -33,7 +48,6 @@ class service::dns::server_defaults {
     $notify               = 'yes'
 
     $reverseNetworkNumber = $defaults::reverseNetworkNumber
-    $parentServer         = $defaults::gatewayIp
     $server               = $::fqdn
     $domain               = $defaults::internalDomain
 }

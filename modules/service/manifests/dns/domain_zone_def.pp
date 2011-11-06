@@ -1,4 +1,4 @@
-define service::dns::domain_zone_def() {
+define service::dns::domain_zone_def ( $server, $domain, $networkNumber, $ttl, $hostsMap, $zone = $name ) {
     file {
         '/etc/named':
             ensure => directory,
@@ -7,10 +7,10 @@ define service::dns::domain_zone_def() {
     }
 
     file {
-        "/etc/named/${name}":
+        "/etc/named/${zone}":
             content => template ( 'service/dns/named/domain.erb' ),
             owner   => 'named',
             group   => 'named',
-            notify  => service [ 'named' ],
+            notify  => Service [ 'named' ],
     }
 }

@@ -2,15 +2,21 @@
 #   
 # == Parameters
 #  
-# [*$localHost*]
-#   The IP address for local host.
-#   
 # [*$listenOn*]
 #   The address to listen upon to resolve names.
 #   
 # [*$forwarders*]
 #   The address to forward requests to when names can't be resolved.
-#   
+#
+# [*$zones*]
+#   The zones this name server operates upon.  For example 168.168.192 and foo.com.
+#
+# [*$hostsMaps*]
+#   The static hosts that this name server will return.  For example,
+#     name   = foo
+#     number = 2
+#     cname  = webserver
+#
 # [*$allowUpdate*]
 #   Address(es) to accept updates from.
 #  
@@ -20,6 +26,9 @@
 # [*$notify*]
 #   The time to live value.
 #     
+# [*$networkNumber*]
+#   The network number - for example in 192.168.168.252, the networkNumber is 192.168.168
+#  
 # [*$reverseNetworkNumber*]
 #   The reverse network number (values in reverse order of networkNumber) - for example in 102.168.168.252, the reverseNetworkNumber is 168.168.192
 #   
@@ -48,28 +57,50 @@
 # Author Name <author@domain.com>
 #   
 class service::dns::server ( 
-    $zones,
     $listenOn             = $service::dns::server_defaults::listenOn,
     $forwarders           = $service::dns::server_defaults::forwarders,
+    $zones                = $service::dns::server_defaults::zones,
+    $hostsMap             = '',
     $allowUpdate          = $service::dns::server_defaults::allowUpdate,
     $ttl                  = $service::dns::server_defaults::ttl,
     $notify               = $service::dns::server_defaults::notify,
 
+    $networkNumber        = $service::dns::server_defaults::networkNumber,
     $reverseNetworkNumber = $service::dns::server_defaults::reverseNetworkNumber,
     $server               = $service::dns::server_defaults::server,
     $domain               = $service::dns::server_defaults::domain
-) inherits services::dns::server_defaults {
+) inherits service::dns::server_defaults {
     util::enable_service_def {
         "${name}::named":
             packages => 'bind',
             service  => 'named',
     }
 
-    service::dns::domain_zone_def {
-        $zones:
+    file {
+        '/etc/named.conf':
+            content => template ( 'service/dns/named.conf.erb' ),
+            owner   => 'named',
+            group   => 'named',
+            notify  => Service [ 'named' ],
     }
 
-    service::dns::reverse_network_number_def {
-        $zones:
+    if ($zones) {
+        service::dns::domain_zone_def {
+            $zones:
+                server        => $server,
+                domain        => $domain,
+                networkNumber => $networkNumber,
+                ttl           => $ttl,
+                hostsMap      => $hostsMap,
+        }
+
+        service::dns::reverse_network_number_def {
+            $zones:
+                server               => $server,
+                domain               => $domain,
+                reverseNetworkNumber => $reverseNetworkNumber,
+                ttl                  => $ttl,
+                hostsMap             => $hostsMap,
+        }
     }
 }

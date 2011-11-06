@@ -14,12 +14,14 @@ $TTL <%= ttl %>
 
 $ORIGIN <%= domain -%>.
 
-<% hosts.each |host| -%>
-    <%= host [ "name" ] %> A <%= baseIp %>.<%= host [ "subIp" ] -%>
+<% hostsMap.each |host| -%>
+    <%= host [ "name" ] %> A <%= networkNumber -%>.<%= host [ "number" ] -%>
 
-    <% if host [ "cname" ] -%>
-        <% host [ "cname" ].each |cname| -%>
-            <%= cname %> CNAME <%= host [ "name" ] %>
+        <% if host [ "cname" ] -%>
+            <% host [ "cname" ].each |cname| -%>
+                <%= cname %> CNAME <%= host [ "name" ] %>
+            <% end -%>
         <% end -%>
     <% end -%>
 <% end -%>
+

@@ -1,4 +1,4 @@
-define service::dns::reverse_network_number_def () {
+define service::dns::reverse_network_number_def ( $server, $domain, $reverseNetworkNumber, $ttl, $hostsMap, $zone = $name ) {
     file {
         '/etc/named':
             ensure => directory,
@@ -7,10 +7,10 @@ define service::dns::reverse_network_number_def () {
     }
 
     file {
-        "/etc/named/${name}":
+        "/etc/named/${zone}":
             content => template ( 'service/dns/named/reverse_network_number.in-addr.arpa.erb' ),
             owner   => 'named',
             group   => 'named',
-            notify  => service [ 'named' ],
+            notify  => Service [ 'named' ],
     }
 }

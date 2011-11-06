@@ -19,7 +19,7 @@
 #   
 # Author Name <author@domain.com>
 #   
-class service::dns::client_defaults {
+class service::dns::client_defaults inherits defaults {
     $nameServer = $defaults::gatewayIp
     $domain     = $defaults::internalDomain
     $search     = $defaults::internalDomain

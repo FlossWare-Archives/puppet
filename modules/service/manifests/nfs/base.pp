@@ -16,7 +16,7 @@ class service::nfs::base {
     include service::rpc
 
     util::enable_service_def {
-        'service::nfs::base::nfslock':
+        "${name}::nfslock":
             service  => 'nfslock',
             packages => 'nfs-utils',
     }

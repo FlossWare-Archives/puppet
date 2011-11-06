@@ -79,7 +79,9 @@
 <node COLOR="#111111" CREATED="1318686214895" ID="ID_779204908" MODIFIED="1318686218028" TEXT="format">
 <node COLOR="#111111" CREATED="1318686184183" ID="ID_910185597" MODIFIED="1318696076982" TEXT="containing">
 <icon BUILTIN="full-1"/>
-<node COLOR="#111111" CREATED="1318686189956" ID="ID_827384083" MODIFIED="1318686191726" TEXT="class"/>
+<node COLOR="#111111" CREATED="1318686189956" ID="ID_827384083" MODIFIED="1318686191726" TEXT="class">
+<node COLOR="#111111" CREATED="1320584767222" ID="ID_1948745154" MODIFIED="1320584775394" TEXT="Use &quot;${name}&quot;"/>
+</node>
 <node COLOR="#111111" CREATED="1318686192021" ID="ID_134313634" MODIFIED="1318686193101" TEXT="def"/>
 </node>
 <node COLOR="#111111" CREATED="1318686194036" ID="ID_1049698515" MODIFIED="1318696079033" TEXT="::">
@@ -104,6 +106,7 @@
 </node>
 <node COLOR="#111111" CREATED="1318690905944" ID="ID_1073294875" MODIFIED="1318690906832" TEXT="class">
 <node COLOR="#111111" CREATED="1318690908535" ID="ID_1586529703" MODIFIED="1318690921929" TEXT="service::nfs::base_client::netfs"/>
+<node COLOR="#111111" CREATED="1320584793742" ID="ID_1739721045" MODIFIED="1320584805498" TEXT="&quot;${name}::foo&quot;"/>
 </node>
 </node>
 </node>
@@ -196,8 +199,7 @@
       }
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node COLOR="#111111" CREATED="1318957205540" ID="ID_310886906" MODIFIED="1318984398566">
 <richcontent TYPE="NODE"><html>
@@ -212,8 +214,7 @@
       }
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -276,8 +277,7 @@
       }
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node COLOR="#111111" CREATED="1318984123148" ID="ID_1509708292" MODIFIED="1318984125950" TEXT="Or">
 <node COLOR="#111111" CREATED="1318984128837" ID="ID_980423077" MODIFIED="1318985119947">
@@ -320,8 +320,7 @@
       }
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node COLOR="#111111" CREATED="1318984048182" ID="ID_286346638" MODIFIED="1318984113024">
 <richcontent TYPE="NODE"><html>
@@ -382,8 +381,7 @@
       }
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node COLOR="#111111" CREATED="1318983900931" ID="ID_367001301" MODIFIED="1318983993065">
 <richcontent TYPE="NODE"><html>
@@ -398,9 +396,70 @@
       }
     </p>
   </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node COLOR="#990000" CREATED="1320586801268" ID="ID_780658403" MODIFIED="1320586806497" TEXT="classes">
+<font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1320586807423" ID="ID_930843556" MODIFIED="1320586809489" TEXT="default values">
+<node COLOR="#111111" CREATED="1320586843160" ID="ID_99611551" MODIFIED="1320586844763" TEXT="structure">
+<node COLOR="#111111" CREATED="1320586810386" ID="ID_1616210448" MODIFIED="1320586846543" TEXT="base class">
+<node COLOR="#111111" CREATED="1320586816281" ID="ID_1257425297" MODIFIED="1320586819493" TEXT="contains all defaults"/>
+</node>
+<node COLOR="#111111" CREATED="1320586820816" ID="ID_1392535156" MODIFIED="1320586823377" TEXT="inherits class">
+<node COLOR="#111111" CREATED="1320586824353" ID="ID_1675472029" MODIFIED="1320586829263" TEXT="uses values from base class"/>
+</node>
+</node>
+<node COLOR="#111111" CREATED="1320586849820" ID="ID_235741402" MODIFIED="1320586851540" TEXT="example">
+<node COLOR="#111111" CREATED="1320586853173" ID="ID_549994142" MODIFIED="1320586907090">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      class foo_defaults {
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;alpha = 'hello'
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;beta = 'goodbye'
+    </p>
+    <p>
+      }
+    </p>
+  </body>
 </html>
 </richcontent>
 </node>
+<node COLOR="#111111" CREATED="1320586914361" ID="ID_725060149" MODIFIED="1320586970375">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      class foo (
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;alpha = $foo_defaults::alpha,
+    </p>
+    <p>
+      &#160;&#160;&#160;&#160;beta = $foo_defaults::beta
+    </p>
+    <p>
+      ) inherits foo_defaults {
+    </p>
+    <p>
+      }
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 </node>

@@ -34,11 +34,9 @@ class service::dns::client (
     $domain     = $service::dns::client_defaults::domain,
     $search     = $service::dns::client_defaults::search,
 ) inherits service::dns::client_defaults {
-    $content = template ( "service/dns/resolv.conf.erb" )
-
     file {
         '/etc/resolv.conf':
-            content => $content,
+            content => template ( "service/dns/resolv.conf.erb" ),
     }
 }
 

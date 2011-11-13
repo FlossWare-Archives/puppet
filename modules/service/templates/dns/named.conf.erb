@@ -2,11 +2,11 @@ options {
 	directory "/etc/named";
 
     <% if listenOn then -%>
-    listen-on { <%= listenOn -%> };
+    listen-on { <%= listenOn -%>; };
     <% end -%>
 
     <% if forwarders then -%>
-	forwarders { <%= forwarders -%> };
+	forwarders { <%= forwarders -%>; };
     <% end -%>
 };
 
@@ -14,8 +14,8 @@ options {
 zone "<%= zone -%>" IN {
 	type master;
 	file "<%= zone -%>";
-    <% if notify then -%>
-    notify { <%= notify -%> };
+    <% if notifyChange then -%>
+    notify <%= notifyChange -%>;
     <% end %>
     <% if allowUpdate then -%>
     allow-update { <%= allowUpdate -%> };

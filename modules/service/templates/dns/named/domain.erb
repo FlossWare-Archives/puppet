@@ -1,6 +1,6 @@
 $ORIGIN .
 $TTL <%= ttl %>
-<% domain -%>		IN SOA	<%= server -%>. root.<%= domain -%>. (
+<% domainZone -%>		IN SOA	<%= server -%>. root.<%= domain -%>. (
 				2000092153 ; serial
 				10800      ; refresh (3 hours)
 				900        ; retry (15 minutes)
@@ -8,20 +8,15 @@ $TTL <%= ttl %>
 				86400      ; minimum (1 day)
 				)
 			    NS	<%= server %>.
-<%if parentServer != "" then -%>
-                A	<%= parentServer %>
-<% end -%>
 
 $ORIGIN <%= domain -%>.
 
-<% hostsMap.each |host| -%>
-    <%= host [ "name" ] %> A <%= networkNumber -%>.<%= host [ "number" ] -%>
-
-        <% if host [ "cname" ] -%>
-            <% host [ "cname" ].each |cname| -%>
-                <%= cname %> CNAME <%= host [ "name" ] %>
-            <% end -%>
-        <% end -%>
-    <% end -%>
+<% hostsMap.each do |host| -%>
+<%= host [ "name" ] %> A <%= networkNumber -%>.<%= host [ "number" ] %>
+    <% if host [ "cname" ] then %>
+        <% host [ "cname" ].each do |cname| %>
+<%= cname %> CNAME <%= host [ "name" ] %>
+        <% end %>
+    <% end %>
 <% end -%>
 

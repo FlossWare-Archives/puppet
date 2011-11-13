@@ -11,6 +11,6 @@ $TTL <%= ttl %>      ; 1 day
     NS	<% server %>.
 $ORIGIN <%= reverseNetworkNumber %>.in-addr.arpa.            
 
-<% hostsMap.each |host| -%>
-    <%= host [ "number" ] %> PTR <%= host [ "name" ] %>.<%= domain %>.
-<% end -%>
+<% hostsMap.each do |host| -%>
+<%= host [ "number" ] -%> PTR <%= host [ "name" ] -%>.<%= domain -%>.
+<% end %>

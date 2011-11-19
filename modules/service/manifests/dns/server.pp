@@ -60,8 +60,8 @@ class service::dns::server (
     $listenOn             = $service::dns::server_defaults::listenOn,
     $forwarders           = $service::dns::server_defaults::forwarders,
     $domainZone           = $service::dns::server_defaults::domain,
-    $reverseZone          = $service::dns::server_defaults::reverseNetworkNumber,
-    $zone                 = $service::dns::server_defaults::zone,
+    $networkZone          = $service::dns::server_defaults::networkZone,
+    $zoneType             = $service::dns::server_defaults::zoneType,
     $hostsMap             = '',
     $allowUpdate          = $service::dns::server_defaults::allowUpdate,
     $ttl                  = $service::dns::server_defaults::ttl,
@@ -72,48 +72,20 @@ class service::dns::server (
     $server               = $service::dns::server_defaults::server,
     $domain               = $service::dns::server_defaults::domain
 ) inherits service::dns::server_defaults {
-    util::enable_service_def {
-        "${name}::named":
-            packages => 'bind',
-            service  => 'named',
-    }
-
-    file {
-        '/etc/named.conf':
-            content => template ( 'service/dns/named.conf.erb' ),
-            owner   => 'named',
-            group   => 'named',
-            notify  => Service [ 'named' ], 
-    }
-
-    if ($domainZone or $reverseZone) {
-        file {
-            '/etc/named':
-                ensure => directory,
-                owner  => 'named',
-                group  => 'named',
-        }
-
-        if ($domainZone) {
-            service::dns::domain_zone_def {
-                $domainZone:
-                    server        => $server,
-                    domain        => $domain,
-                    networkNumber => $networkNumber,
-                    ttl           => $ttl,
-                    hostsMap      => $hostsMap,
-            }
-        }
-
-        if ($reverseZone) {
-            service::dns::reverse_network_number_def {
-                $reverseZone:
-                    server               => $server,
-                    domain               => $domain,
-                    reverseNetworkNumber => $reverseNetworkNumber,
-                    ttl                  => $ttl,
-                    hostsMap             => $hostsMap,
-            }
-        }
+    service::dns::server_def {
+        $name:
+            listenOn             => $listenOn,
+            forwarders           => $forwarders,
+            domainZone           => $domainZone,
+            networkZone          => $networkZone,
+            zoneType             => $zoneType,
+            hostsMap             => $hostsMap,
+            allowUpdate          => $allowUpdate,
+            ttl                  => $ttl,
+            notifyChange         => $notifyChange,
+            networkNumber        => $networkNumber,
+            reverseNetworkNumber => $reverseNetworkNumber,
+            server               => $server,
+            domain               => $domain,
     }
 }

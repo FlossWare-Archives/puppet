@@ -48,9 +48,9 @@ class service::dns::server_defaults inherits defaults {
 
     $listenOn             = $::ipaddress
     $forwarders           = $defaults::gatewayIp
-    $domainZone           = $domain
-    $reverseZone          = $reverseNetworkNumber
-    $zones                = [ $domain, $reverseNetworkNumber ]
+    $domainZone           = $::domain
+    $networkZone          = $defaults::reverseNetworkNumber
+    $zoneType             = 'master'
     $notifyChange         = 'yes'
     $allowUpdate          = "${::ipaddress}; ${localHost};"
 

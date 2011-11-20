@@ -1,7 +1,7 @@
 $ORIGIN .
 $TTL <%= ttl %>      ; 1 day
 
-<%= networkZone %> IN SOA <% server %>. (
+<%= networkZone -%>.in-addr.arpa IN SOA <% server %>. (
     1997023074 ; serial
     28800      ; refresh (8 hours)
     14400      ; retry (4 hours)
@@ -9,7 +9,7 @@ $TTL <%= ttl %>      ; 1 day
     86400      ; minimum (1 day)
     )
     NS	<% server %>.
-$ORIGIN <%= networkZone -%>.            
+$ORIGIN <%= networkZone -%>.in-addr.arpa.
 
 <% hostsMap.each do |host| -%>
 <%= host [ "number" ] -%> PTR <%= host [ "name" ] -%>.<%= domain -%>.

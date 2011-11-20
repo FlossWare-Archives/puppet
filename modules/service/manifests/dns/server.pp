@@ -62,30 +62,35 @@ class service::dns::server (
     $domainZone           = $service::dns::server_defaults::domain,
     $networkZone          = $service::dns::server_defaults::networkZone,
     $zoneType             = $service::dns::server_defaults::zoneType,
-    $hostsMap             = '',
+    $notifyChange         = $service::dns::server_defaults::notifyChange,
     $allowUpdate          = $service::dns::server_defaults::allowUpdate,
     $ttl                  = $service::dns::server_defaults::ttl,
-    $notifyChange         = $service::dns::server_defaults::notifyChange,
-
     $networkNumber        = $service::dns::server_defaults::networkNumber,
-    $reverseNetworkNumber = $service::dns::server_defaults::reverseNetworkNumber,
     $server               = $service::dns::server_defaults::server,
-    $domain               = $service::dns::server_defaults::domain
+    $domain               = $service::dns::server_defaults::domain,
+    $hostsMap             = ''
 ) inherits service::dns::server_defaults {
-    service::dns::server_def {
-        $name:
-            listenOn             => $listenOn,
-            forwarders           => $forwarders,
-            domainZone           => $domainZone,
-            networkZone          => $networkZone,
-            zoneType             => $zoneType,
-            hostsMap             => $hostsMap,
-            allowUpdate          => $allowUpdate,
-            ttl                  => $ttl,
-            notifyChange         => $notifyChange,
-            networkNumber        => $networkNumber,
-            reverseNetworkNumber => $reverseNetworkNumber,
-            server               => $server,
-            domain               => $domain,
+    $serverMap = {
+        listenOn   => $listenOn,
+        forwarders => $forwarders,
+        zones      => {
+            {
+                domainZone    => $domainZone,
+                networkZone   => $networkZone,
+                zoneType      => $zoneType,
+                notifyChange  => $notifyChange,
+                allowUpdate   => $allowUpdate,
+                ttl           => $ttl,
+                networkNumber => $networkNumber,
+                server        => $server,
+                domain        => $domain,
+                hostsMap      => $hostsMap,
+            },
+        },
+    }
+
+    class {
+        'service::dns::mapped_server':
+            serverMap => $serverMap,
     }
 }

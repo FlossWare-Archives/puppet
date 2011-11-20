@@ -1,16 +1,17 @@
 options {
     directory "/etc/named";
 
-    <% if listenOn then -%>
-    listen-on { <%= listenOn -%>; };
+    <% if serverMap [ "listenOn" ] then -%>
+    listen-on { <%= serverMap [ "listenOn" ] -%>; };
     <% end -%>
 
-    <% if forwarders then -%>
-    forwarders { <%= forwarders -%>; };
+    <% if serverMap [ "forwarders" ] then -%>
+    forwarders { <%= serverMap [ "forwarders" ] -%>; };
     <% end -%>
 };
 
-<% zones.each do |zone| -%>
+<%if serverMap [ "zones" ] then -%>
+<% serverMap [ "zones" ].each do |zone| -%>
 zone "<%= zone -%>" IN {
     type <%= zoneType -%>;
     file "<%= zone -%>";
@@ -21,4 +22,5 @@ zone "<%= zone -%>" IN {
     allow-update { <%= allowUpdate -%> };
     <% end %>
 };
+<% end %>
 <% end %>

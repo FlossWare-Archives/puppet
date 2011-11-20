@@ -43,12 +43,10 @@
 class service::dns::server_defaults inherits defaults {
     $localHost            = '127.0.0.1'
     $networkNumber        = $defaults::networkNumber
-    $reverseNetworkNumber = $defaults::reverseNetworkNumber
-    $domain               = $defaults::internalDomain
 
     $listenOn             = $::ipaddress
     $forwarders           = $defaults::gatewayIp
-    $domainZone           = $::domain
+    $domainZone           = $defaults::internalDomain
     $networkZone          = $defaults::reverseNetworkNumber
     $zoneType             = 'master'
     $notifyChange         = 'yes'

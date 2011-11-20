@@ -20,6 +20,7 @@ define service::dns::server_def ( $serverMap ) {
             owner  => 'named',
             group  => 'named',
             path   => '/etc/named',
+            notify  => Service [ 'named' ], 
     }
 
     service::dns::zone_def {

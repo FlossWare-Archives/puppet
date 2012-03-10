@@ -5,8 +5,8 @@
 # Scot P. Floess <flossware@gmail.com>
 #
 class yum::centos::centosplus {
-    util::enable_repo_def {
+    yum::centos::centos_repo_def {
         'centosplus':
-            repoName => 'centosplus',
+            repo => 'centosplus',
     }
 }

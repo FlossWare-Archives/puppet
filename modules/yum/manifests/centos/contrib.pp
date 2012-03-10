@@ -5,8 +5,8 @@
 # Scot P. Floess <flossware@gmail.com>
 #
 class yum::centos::contrib {
-    util::enable_repo_def {
+    yum::centos::centos_repo_def {
         'contrib':
-            repoName => 'contrib',
+            repo => 'contrib',
     }
 }

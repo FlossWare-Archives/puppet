@@ -1,0 +1,64 @@
+Classes:
+    # Full description of class here.
+    #
+    # == Parameters
+    #
+    # Document parameters here
+    #
+    # [*servers*]
+    #   Description of servers class parameter.  e.g. "Specify one or more
+    #   upstream ntp servers as an array."
+    #
+    # == Variables
+    #
+    # Here you should define a list of variables that this module would require.
+    #
+    # [*$enc_ntp_servers*]
+    #     Description of this variable.  e.g. "The parameter enc_ntp_servers
+    # must be set by the External Node Classifier as a comma separated list of
+    # hostnames."  (Note, global variables should not be used in preference to
+    # class parameters as of Puppet 2.6.)
+    #
+    # == Examples
+    #
+    # Put some examples on how to use your class here.
+    #
+    #   $example_var = "blah"
+    #   include example_class
+    #
+    # == Authors
+    #
+    # Author Name <author@domain.com>
+    #
+    # == Copyright
+    #
+    # Copyright 2011 Company Name Inc, unless otherwise noted.
+    #
+
+Defines:
+    # Description of resource here
+    #
+    # == Parameters
+    #
+    # Document parameters here
+    #
+    # [*namevar*]
+    #   If there is a parameter that defaults to the value of the title string
+    # when not explicitly set, you must always say so.  This parameter can be
+    # referred to as a "namevar," since it's functionally equivalent to the
+    # namevar of a core resource type.
+    #
+    # [*basedir*]
+    #   Description of this variable.  For example, "This parameter sets the
+    # base directory for this resource type.  It should not contain a trailing
+    # slash."
+    #
+    # == Examples
+    #
+    # Provide some examples on how to use this type:
+    #
+    #   example_class::example_resource{
+    #     "namevar":
+    #       sample_param => "value",
+    #   }
+    #

@@ -1,0 +1,576 @@
+General Philosophies
+
+No style manual can cover every possible circumstance. When a judgement call becomes necessary, keep in mind the following general ideas:
+
+   1. Readability matters. If you have to choose between two equally effective alternatives, pick the more readable one. This is, of course, subjective, but if you can read your own code three months from now, that’s a great start.
+   2. Inheritance should be avoided. In general, inheritance leads to code that is harder to read. Most use cases for inheritance can be replaced by exposing class parameters that can be used to configure resource attributes. See the Class Inheritance section for more details.
+   3. Modules must work with an ENC without requiring one. An internal survey yielded near consensus that an ENC should not be required.  At the same time, every module we write should work well with an ENC.
+   4. Classes should generally not declare other classes. Declare classes as close to node scope as possible. Classes which require other classes should not directly declare them and should instead allow the system to fail if they are not declared by some other means. (Although the include function allows multiple declarations of classes, it can result in non-deterministic scoping issues due to the way parent scopes are assigned. We might revisit this philosophy in the future if class multi-declarations can be made deterministic, but for now, be conservative with declarations.)
+
+Module Metadata
+
+Every module must have Metadata defined in the Modulefile data file and outputted as the metadata.json file.  The following Metadata should be provided for all modules:
+
+name 'myuser-mymodule'
+version '0.0.1'
+author 'Author of the module - for shared modules this is Puppet Labs'
+summary 'One line description of the module'
+description 'Longer description of the module including an example'
+license 'The license the module is release under - generally GPLv2 or Apache'
+project_page 'The URL where the module source is located'
+dependency 'otheruser-othermodule', '1.2.3'
+
+A more complete guide to the Modulefile format can be found in the puppet-module-tool README.
+Style Versioning
+
+This style guide will be versioned, which will allow modules to comply with a specific version of the style guide.
+
+A future version of the puppet-module tool may permit the relevant style guide version to be embedded as metadata in the Modulefile, and the metadata in turn may be used for automated linting.
+Spacing, Indentation, & Whitespace
+
+Module manifests complying with this style guide:
+
+    * Must use two-space soft tabs
+    * Must not use literal tab characters
+    * Must not contain trailing white space
+    * Should not exceed an 80 character line width
+    * Should align fat comma arrows (=>) within blocks of attributes
+
+Comments
+
+Although the Puppet language allows multiple comment types, we prefer hash/octothorpe comments (# This is a comment) because they’re generally the most visible to text editors and other code lexers.
+
+   1. Should use # ... for comments
+   2. Should not use // ... or /* ... */ for comments
+
+Quoting
+
+All strings that do not contain variables should be enclosed in single quotes.  Double quotes should be used when variable interpolation is required.  Quoting is optional when the string is an alphanumeric bare word and is not a resource title.
+
+All variables should be enclosed in braces when interpolated in a string.  For example:
+
+Good:
+
+    "/etc/${file}.conf"
+    "${operatingsystem} is not supported by ${module_name}"
+
+Bad:
+
+    "/etc/$file.conf"
+    "$operatingsystem is not supported by $module_name"
+
+Variables standing by themselves should not be quoted.  For example:
+
+Good:
+
+    mode => $my_mode
+
+Bad:
+
+    mode => "$my_mode"
+    mode => "${my_mode}"
+
+Resources
+Resource Names
+
+All resource titles should be quoted. (Puppet supports unquoted resource titles if they do not contain spaces or hyphens, but you should avoid them in the interest of consistent look-and-feel.)
+
+Good:
+
+    package { 'openssh': ensure => present }
+
+Bad:
+
+    package { openssh: ensure => present }
+
+Arrow Alignment
+
+All of the fat comma arrows (=>) in a resource’s attribute/value list should be aligned. The arrows should be placed one space ahead of the longest attribute name.
+
+Good:
+
+    exec { 'blah':
+      path => '/usr/bin',
+      cwd  => '/tmp',
+    }
+
+    exec { 'test':
+      subscribe   => File['/etc/test'],
+      refreshonly => true,
+    }
+
+Bad:
+
+    exec { 'blah':
+     path => '/usr/bin',
+     cwd => '/tmp',
+    }
+
+    exec { 'test':
+      subscribe => File['/etc/test'],
+      refreshonly => true,
+    }
+
+Attribute Ordering
+
+If a resource declaration includes an ensure attribute, it should be the first attribute specified.
+
+Good:
+
+    file { '/tmp/readme.txt':
+      ensure => file,
+      owner  => '0',
+      group  => '0',
+      mode   => '0644',
+    }
+
+(This recommendation is solely in the interest of readability, as Puppet ignores attribute order when syncing resources.)
+Compression
+
+Within a given manifest, resources should be grouped by logical relationship to each other, rather than by resource type. Use of the semicolon syntax to declare multiple resources within a set of curly braces is not recommended, except in the rare cases where it would improve readability.
+
+Good:
+
+    file { '/tmp/a':
+      content => 'a',
+    }
+
+    exec { 'change contents of a':
+      command => 'sed -i.bak s/a/A/g /tmp/a',
+    }
+
+    file { '/tmp/b':
+      content => 'b',
+    }
+
+    exec { 'change contents of b':
+      command => 'sed -i.bak s/b/B/g /tmp/b',
+    }
+
+Bad:
+
+    file {
+      "/tmp/a":
+        content => "a";
+      "/tmp/b":
+        content => "b";
+    }
+
+    exec {
+      "change contents of a":
+        command => "sed -i.bak s/b/B/g /tmp/a";
+      "change contents of b":
+        command => "sed -i.bak s/b/B/g /tmp/b";
+    }
+
+Symbolic Links
+
+In the interest of clarity, symbolic links should be declared by using an ensure value of ensure => link and explicitly specifying a value for the target attribute. Using a path to the target as the ensure value is not recommended.
+
+Good:
+
+    file { '/var/log/syslog':
+      ensure => link,
+      target => '/var/log/messages',
+    }
+
+Bad:
+
+    file { '/var/log/syslog':
+      ensure => '/var/log/messages',
+    }
+
+File Modes
+
+File modes should be represented as 4 digits rather than 3, to explicitly show that they are octal values.
+
+In addition, file modes should be specified as single-quoted strings instead of bare word numbers.
+
+Good:
+
+    file { '/var/log/syslog':
+      ensure => present,
+      mode   => '0644',
+    }
+
+Bad:
+
+    file { '/var/log/syslog':
+      ensure => present,
+      mode   => 644,
+    }
+
+Resource Defaults
+
+Resource defaults should be used in a very controlled manner, and should only be declared at the edges of your manifest ecosystem. Specifically, they may be declared:
+
+    * At top scope in site.pp
+    * In a class which is guaranteed to never declare another class and never be inherited by another class.
+
+This is due to the way resource defaults propagate through dynamic scope, which can have unpredictable effects far away from where the default was declared.
+
+Good:
+
+    # /etc/puppetlabs/puppet/manifests/site.pp:
+    File {
+      mode   => '0644',
+      owner  => 'root',
+      group  => 'root',
+    }
+
+Bad:
+
+    # /etc/puppetlabs/puppet/modules/ssh/manifests/init.pp
+    File {
+      mode   => '0600',
+      owner  => 'nobody',
+      group  => 'nogroup',
+    }
+
+    class {'ssh::client':
+      ensure => present,
+    }
+
+Conditionals
+Keep Resource Declarations Simple
+
+You should not intermingle conditionals with resource declarations. When using conditionals for data assignment, you should separate conditional code from the resource declarations.
+
+Good:
+
+    $file_mode = $operatingsystem ? {
+      debian => '0007',
+      redhat => '0776',
+      fedora => '0007',
+    }
+
+    file { '/tmp/readme.txt':
+       content => "Hello World\n",
+       mode    => $file_mode,
+    }
+
+Bad:
+
+    file { '/tmp/readme.txt':
+      mode => $operatingsystem ? {
+        debian => '0777',
+        redhat => '0776',
+        fedora => '0007',
+      }
+    }
+
+Defaults for Case Statements and Selectors
+
+Case statements should have default cases. Additionally, the default case should fail the catalog compilation when the resulting behavior cannot be predicted on the majority of platforms the module will be used on. If you want the default case to be “do nothing,” include it as an explicit default: {} for clarity’s sake.
+
+For selectors, default selections should only be omitted if you explicitly want catalog compilation to fail when no value matches.
+
+The following example follows the recommended style:
+
+    case $operatingsystem {
+      centos: {
+        $version = '1.2.3'
+      }
+      solaris: {
+        $version = '3.2.1'
+      }
+      default: {
+        fail("Module $module_name is not supported on $operatingsystem")
+      }
+    }
+
+Classes
+Separate Files
+
+All classes and resource type definitions must be in separate files in the manifests directory of their module. For example:
+
+    # /etc/puppetlabs/puppet/modules/apache/manifests
+
+    # init.pp
+      class apache { }
+    # ssl.pp
+      class apache::ssl { }
+    # virtual_host.pp
+      define apache::virtual_host () { }
+
+This is functionally identical to declaring all classes and defines in init.pp, but highlights the structure of the module and makes everything more legible.
+Internal Organization of a Class
+
+Classes should be organised with a consistent structure and style. In the below list there is an implicit statement of “should be at this relative location” for each of these items.  The word “may” should be interpreted as “If there are any X’s they should be here”.
+
+   1. Should define the class and parameters
+   2. Should validate any class parameters and fail catalog compilation if any parameters are invalid
+   3. Should default any validated parameters to the most general case
+   4. May declare local variables
+   5. May declare relationships to other classes Class['apache'] -> Class['local_yum']
+   6. May override resources
+   7. May declare resource defaults
+   8. May declare resources; resources of defined and custom types should go before those of core types
+   9. May declare resource relationships inside of conditionals
+
+The following example follows the recommended style:
+
+    class myservice($ensure='running') {
+
+      if $ensure in [ running, stopped ] {
+        $ensure_real = $ensure
+      } else {
+        fail('ensure parameter must be running or stopped')
+      }
+
+      case $operatingsystem {
+        centos: {
+          $package_list = 'openssh-server'
+        }
+        solaris: {
+          $pacakge_list = [ SUNWsshr, SUNWsshu ]
+        }
+        default: {
+          fail("module $module_name does not support $operatingsystem")
+        }
+      }
+
+      $variable = 'something'
+
+      Package { ensure => present, }
+
+      File { owner => '0', group => '0', mode => '0644' }
+
+      package { $package_list: }
+
+      file { "/tmp/${variable}":
+        ensure => present,
+      }
+
+      service { 'myservice':
+        ensure    => $ensure_real,
+        hasstatus => true,
+      }
+    }
+
+Relationship Declarations
+
+Relationship declarations with the chaining syntax should only be used in the “left to right” direction.
+
+Good: 
+
+Package['httpd'] -> Service['httpd']
+
+Bad:
+
+Service['httpd'] <- Package['httpd']
+
+When possible, you should prefer metaparameters to relationship declarations. One example where metaparameters aren’t desirable is when subclassing would be necessary to override behavior; in this situation, relationship declarations inside of conditionals should be used.
+Classes and Defined Resource Types Within Classes
+
+Classes and defined resource types must not be defined within other classes.
+
+Bad:
+
+    class apache {
+      class ssl { ... }
+    }
+
+Also bad:
+
+    class apache {
+      define config() { ... }
+    }
+
+Class Inheritance
+
+Inheritance may be used within a module, but must not be used across module namespaces. Cross-module dependencies should be satisfied in a more portable way that doesn’t violate the concept of modularity, such as with include statements or relationship declarations.
+
+Good:
+
+    class ssh { ... }
+
+    class ssh::client inherits ssh { ... }
+
+    class ssh::server inherits ssh { ... }
+
+    class ssh::server::solaris inherits ssh::server { ... }
+
+Bad:
+
+    class ssh inherits server { ... }
+
+    class ssh:client inherits workstation { ... }
+
+    class wordpress inherits apache { ... }
+
+Inheritance in general should be avoided when alternatives are viable.  For example, instead of using inheritance to override relationships in an existing class when stopping a service, consider using a single class with an ensure parameter and conditional relationship declarations:
+
+    class bluetooth($ensure=present, $autoupgrade=false) {
+       # Validate class parameter inputs. (Fail early and fail hard)
+
+       if ! ($ensure in [ "present", "absent" ]) {
+         fail("bluetooth ensure parameter must be absent or present")
+       }
+
+       if ! ($autoupgrade in [ true, false ]) {
+         fail("bluetooth autoupgrade parameter must be true or false")
+       }
+
+       # Set local variables based on the desired state
+
+       if $ensure == "present" {
+         $service_enable = true
+         $service_ensure = running
+         if $autoupgrade == true {
+           $package_ensure = latest
+         } else {
+           $package_ensure = present
+         }
+       } else {
+         $service_enable = false
+         $service_ensure = stopped
+         $package_ensure = absent
+       }
+
+       # Declare resources without any relationships in this section
+
+       package { [ "bluez-libs", "bluez-utils"]:
+         ensure => $package_ensure,
+       }
+
+       service { hidd:
+         enable         => $service_enable,
+         ensure         => $service_ensure,
+         status         => "source /etc/init.d/functions; status hidd",
+         hasstatus      => true,
+         hasrestart     => true,
+      }
+
+      # Finally, declare relations based on desired behavior
+
+      if $ensure == "present" {
+        Package["bluez-libs"]  -> Package["bluez-utils"]
+        Package["bluez-libs"]  ~> Service[hidd]
+        Package["bluez-utils"] ~> Service[hidd]
+      } else {
+        Service["hidd"]        -> Package["bluez-utils"]
+        Package["bluez-utils"] -> Package["bluez-libs"]
+      }
+    }
+
+(This example makes several assumptions and is based on an example provided in the Puppet Master training for managing bluetooth.)
+
+In summary:
+
+    * Class inheritance is only useful for overriding resource attributes; any other use case is better accomplished with other methods.
+    * If you just need to override relationship metaparameters, you should use a single class with conditional relationship declarations instead of inheritance.
+    * In many cases, even other attributes (e.g. ensure and enable) may have their behavior changed with variables and conditional logic instead of inheritance.
+
+Namespacing Variables
+
+When using top-scope variables, including facts, Puppet modules should explicitly specify the empty namespace (i.e., $::operatingsystem, not $operatingsystem) to prevent accidental scoping issues.
+Display Order of Class Parameters
+
+In parameterized class and defined resource type declarations, parameters that are required should be listed before optional parameters (i.e. parameters with defaults).
+
+Good:
+
+    class ntp (
+      $servers,
+      $options = "iburst",
+      $multicast = false
+    ) {}
+
+Bad:
+
+    class ntp (
+      $options = "iburst",
+      $servers,
+      $multicast = false
+    ) {}
+
+Tests
+
+All manifests should have a corresponding test manifest in the module’s tests directory.
+
+modulepath/apache/manifests/{init,ssl}.pp
+modulepath/apache/tests/{init,ssl}.pp
+
+The test manifest should provide a clear example of how to declare the class or defined resource type. In addition, the test manifest should also declare any classes required by the corresponding class to ensure puppet apply works in a limited, stand alone manner.
+Puppet Doc
+
+Classes and defined resource types should be documented inline using the following conventions:
+
+For classes:
+
+    # Full description of class here.
+    #
+    # == Parameters
+    #
+    # Document parameters here
+    #
+    # [*servers*]
+    #   Description of servers class parameter.  e.g. "Specify one or more
+    #   upstream ntp servers as an array."
+    #
+    # == Variables
+    #
+    # Here you should define a list of variables that this module would require.
+    #
+    # [*$enc_ntp_servers*]
+    #     Description of this variable.  e.g. "The parameter enc_ntp_servers
+    # must be set by the External Node Classifier as a comma separated list of
+    # hostnames."  (Note, global variables should not be used in preference to
+    # class parameters as of Puppet 2.6.)
+    #
+    # == Examples
+    #
+    # Put some examples on how to use your class here.
+    #
+    #   $example_var = "blah"
+    #   include example_class
+    #
+    # == Authors
+    #
+    # Author Name <author@domain.com\>
+    #
+    # == Copyright
+    #
+    # Copyright 2011 Company Name Inc, unless otherwise noted.
+    #
+    class example_class {
+      ...
+    }
+
+For defined resources:
+
+    # Description of resource here
+    #
+    # == Parameters
+    #
+    # Document parameters here
+    #
+    # [*namevar*]
+    #   If there is a parameter that defaults to the value of the title string
+    # when not explicitly set, you must always say so.  This parameter can be
+    # referred to as a "namevar," since it's functionally equivalent to the
+    # namevar of a core resource type.
+    #
+    # [*basedir*]
+    #   Description of this variable.  For example, "This parameter sets the
+    # base directory for this resource type.  It should not contain a trailing
+    # slash."
+    #
+    # == Examples
+    #
+    # Provide some examples on how to use this type:
+    #
+    #   example_class::example_resource{
+    #     "namevar":
+    #       sample_param => "value",
+    #   }
+    #
+    define example_class::example_resource($example_var) {
+      ...
+    }
+
+This will allow documentation to be automatically extracted with the puppet doc tool.
+The extlookup() Function
+
+Modules should avoid the use of extlookup() in favor of ENCs or other alternatives.
